@@ -87,7 +87,7 @@ const D3LineChart: React.FC<D3LineChartProps> = ({ data, width = 600, height = 3
     const line = d3.line<any>()
       .x(d => xScale(d.parsedDate))
       .y(d => yScale(d.revenue))
-      .curve(d3.curveMonotoneX);
+      .curve(d3.curveLinear);
 
     // Gradient
     const gradient = svg.append('defs')
@@ -112,7 +112,7 @@ const D3LineChart: React.FC<D3LineChartProps> = ({ data, width = 600, height = 3
       .x(d => xScale(d.parsedDate))
       .y0(innerHeight)
       .y1(d => yScale(d.revenue))
-      .curve(d3.curveMonotoneX);
+      .curve(d3.curveLinear);
 
     g.append('path')
       .datum(parsedData)

@@ -102,13 +102,13 @@
 }
 
 .component-item.selected {
-  background-color: #3b82f6;
-  color: #ffffff;
+  background-color: #e5e7eb;
+  color: #374151;
   font-weight: 500;
 }
 
 .component-item.selected .in-page-indicator {
-  color: #ffffff;
+  color: #374151;
 }
 
 .component-item:disabled {

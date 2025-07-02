@@ -41,6 +41,10 @@ const UserManagement: React.FC = () => {
     );
   };
 
+  const getAvatarColor = () => {
+    return '#9ca3af';
+  };
+
   return (
     <div className="user-management">
       <ComponentTooltip
@@ -145,7 +149,10 @@ const UserManagement: React.FC = () => {
                       description="사용자 정보를 표시하는 테이블 셀입니다."
                     >
                       <div className="user-cell">
-                        <div className="user-avatar">
+                        <div 
+                          className="user-avatar"
+                          style={{ backgroundColor: getAvatarColor() }}
+                        >
                           {user.name.charAt(0)}
                         </div>
                         <span>{user.name}</span>
