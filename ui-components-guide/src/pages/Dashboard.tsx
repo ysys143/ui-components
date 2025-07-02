@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowUp, ArrowDown, Users, ShoppingCart, DollarSign, TrendingUp, Package, CreditCard, UserCheck, RefreshCw } from 'lucide-react';
+import React from 'react';
+import { ArrowUp, ArrowDown, Users, ShoppingCart, DollarSign, CreditCard } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
 import StandardPageHeader from '../components/StandardPageHeader';
 import D3LineChart from '../components/charts/D3LineChart';
@@ -53,6 +53,7 @@ const Dashboard: React.FC = () => {
     },
   ];
 
+  /*
   const chartData = [
     { name: '1월', value: 400, sales: 240 },
     { name: '2월', value: 300, sales: 139 },
@@ -67,6 +68,7 @@ const Dashboard: React.FC = () => {
     { name: '모바일', value: 35, color: '#10b981' },
     { name: '태블릿', value: 20, color: '#f59e0b' },
   ];
+  */
 
   return (
     <div className="dashboard">

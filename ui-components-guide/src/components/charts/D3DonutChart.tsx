@@ -123,7 +123,7 @@ const D3DonutChart: React.FC<D3DonutChartProps> = ({ data, width = 300, height =
           .style('left', (event.pageX + 10) + 'px')
           .style('top', (event.pageY - 28) + 'px');
       })
-      .on('mouseout', function(event, d) {
+      .on('mouseout', function(_event, d) {
         d3.select(this)
           .transition()
           .duration(200)

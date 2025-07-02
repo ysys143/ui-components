@@ -236,12 +236,7 @@ const componentDescriptions: Record<string, {
     example: '<button aria-label="메뉴 열기"><MenuIcon /></button>',
     related: ['aria-label', 'aria-describedby', 'role', 'aria-live']
   },
-  'screen-reader': {
-    description: '시각 장애인이 사용하는 화면 낭독 프로그램을 위한 지원 기능입니다.',
-    usage: '화면에 보이지 않지만 스크린 리더가 읽어야 하는 정보나, 동적으로 변경되는 콘텐츠를 알릴 때 사용합니다.',
-    example: '<span className="visually-hidden">새 알림 3개</span>',
-    related: ['aria', 'visually-hidden', 'live-region']
-  },
+
   'focus-indicators': {
     description: '키보드로 탐색할 때 현재 포커스가 어디에 있는지 시각적으로 표시하는 기능입니다.',
     usage: '키보드 사용자가 현재 위치를 파악하고 탐색할 수 있도록 명확한 포커스 표시를 제공합니다.',
@@ -880,10 +875,10 @@ const ComponentDescription: React.FC<ComponentDescriptionProps> = ({
           <p>{info.usage}</p>
         </div>
         
-        {info.example && (
+        {(info as any).example && (
           <div className="description-section">
             <h5>예시 코드</h5>
-            <code className="description-code">{info.example}</code>
+            <code className="description-code">{(info as any).example}</code>
           </div>
         )}
         

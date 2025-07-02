@@ -74,7 +74,7 @@ const D3LineChart: React.FC<D3LineChartProps> = ({ data, width = 600, height = 3
     g.append('g')
       .attr('transform', `translate(0,${innerHeight})`)
       .call(d3.axisBottom(xScale)
-        .tickFormat(d3.timeFormat('%m/%d'))
+        .tickFormat(d3.timeFormat('%m/%d') as any)
       )
       .style('color', chartColors.text.secondary)
       .style('font-size', '12px');

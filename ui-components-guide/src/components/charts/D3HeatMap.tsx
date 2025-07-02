@@ -40,11 +40,11 @@ const D3HeatMap: React.FC<D3HeatMapProps> = ({ data, width = 600, height = 200 }
     // Color scales
     const visitorColorScale = d3.scaleLinear()
       .domain([0, d3.max(data, d => d.visitors) as number])
-      .range([chartColors.gradient.heatmap.visitor.low, chartColors.gradient.heatmap.visitor.high]);
+      .range([0, 1]);
 
     const bounceColorScale = d3.scaleLinear()
       .domain([55, 30])
-      .range([chartColors.gradient.heatmap.bounce.high, chartColors.gradient.heatmap.bounce.low]);
+      .range([1, 0]);
 
     // Create cells for visitors
     g.selectAll('.visitor-cell')
@@ -132,7 +132,7 @@ const D3HeatMap: React.FC<D3HeatMapProps> = ({ data, width = 600, height = 200 }
           .attr('stroke', chartColors.text.primary)
           .attr('stroke-width', 2);
         
-        const isVisitorCell = d3.select(this).classed('visitor-cell');
+        // const isVisitorCell = d3.select(this).classed('visitor-cell');
         
         tooltip.transition().duration(200).style('opacity', .9);
         tooltip.html(`${data.hour}:00-${data.hour + 1}:00<br/>

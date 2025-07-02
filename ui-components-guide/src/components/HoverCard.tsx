@@ -15,7 +15,7 @@ const HoverCard: React.FC<HoverCardProps> = ({ item, position }) => {
       const card = cardRef.current;
       const rect = card.getBoundingClientRect();
       const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
+      // const viewportHeight = window.innerHeight;
 
       let left = position.x - rect.width / 2;
       let top = position.y - rect.height - 10;

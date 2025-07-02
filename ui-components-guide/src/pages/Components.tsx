@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { 
   Search, Upload, Calendar, Star, Plus, Minus, ChevronDown, 
-  X, Check, AlertCircle, Info, ChevronRight, Download, Play,
-  Pause, SkipForward, SkipBack, Volume2, Settings, Home,
-  User, Mail, Phone, MapPin, Globe, Heart, Share2, Bookmark,
-  MoreVertical, HelpCircle, Folder, FolderOpen, File, Grid3X3,
-  Menu as MenuIcon, ExternalLink, ArrowRight, Bell, FileX, XCircle
+  X, Check, AlertCircle, Info, ChevronRight, Download,
+  Settings, Home,
+  User, Mail,
+  HelpCircle, Folder, FolderOpen, File, Grid3X3,
+  ExternalLink, ArrowRight, Bell, FileX, XCircle
 } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
 import StandardPageHeader from '../components/StandardPageHeader';
 import './Components.css';
 
 const Components: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({
     switch1: false,
     switch2: true,

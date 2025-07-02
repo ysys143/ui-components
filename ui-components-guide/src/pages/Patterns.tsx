@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { 
-  User, Lock, Mail, Eye, EyeOff, LogIn, UserPlus, AlertCircle,
+  User, Lock, Mail, Eye, EyeOff, LogIn, AlertCircle,
   Search, Filter, Download, Plus, Edit, Trash2, ChevronRight,
-  Check, X, ArrowRight, ArrowLeft, Upload, Image, FileText,
-  Calendar, Clock, MapPin, Phone, CreditCard, Shield, Bell, Heart
+  Check, ArrowRight, ArrowLeft, Upload, Image, FileText,
+  Calendar, CreditCard, Shield, Bell, Heart
 } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
 import StandardPageHeader from '../components/StandardPageHeader';

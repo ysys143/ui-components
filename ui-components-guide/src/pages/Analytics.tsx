@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Calendar, Download, TrendingUp, TrendingDown, Users, UserCheck, Eye, Activity, Clock } from 'lucide-react';
+import React from 'react';
+import { Calendar, Download, TrendingUp, TrendingDown, Users, UserCheck, Eye, Activity } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
 import StandardPageHeader from '../components/StandardPageHeader';
 import D3LineChart from '../components/charts/D3LineChart';
-import D3BarChart from '../components/charts/D3BarChart';
+// import D3BarChart from '../components/charts/D3BarChart';
 import D3DonutChart from '../components/charts/D3DonutChart';
 import D3FunnelChart from '../components/charts/D3FunnelChart';
 import ResponsiveChart from '../components/charts/ResponsiveChart';

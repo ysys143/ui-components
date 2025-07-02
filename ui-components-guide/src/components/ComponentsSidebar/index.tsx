@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronDown } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ComponentDescription from './ComponentDescription';
-import { componentsData } from '../../data/components';
+import { componentsData, ComponentItem } from '../../data/components';
 import './ComponentsSidebar.css';
 
 interface PageComponent {
@@ -464,7 +464,7 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({
   useEffect(() => {
     // Intersection Observer로 현재 보이는 컴포넌트 추적
     const observer = new IntersectionObserver(
-      (entries) => {
+      (entries: IntersectionObserverEntry[]) => {
         // 가장 중앙에 가까운 요소 찾기
         let mostCenteredEntry: IntersectionObserverEntry | null = null;
         let minDistance = Infinity;
@@ -484,7 +484,7 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({
         });
         
         if (mostCenteredEntry) {
-          const componentId = mostCenteredEntry.target.getAttribute('data-component');
+          const componentId = mostCenteredEntry.target?.getAttribute?.('data-component');
           if (componentId) {
             // 해당 컴포넌트의 사이드바 ID 찾기
             // 모든 가능한 사이드바 ID를 확인
