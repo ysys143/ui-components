@@ -1,7 +1,7 @@
 .dashboard {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
   margin: 0;
   padding: 0 2rem;
@@ -13,8 +13,8 @@
 }
 
 .dashboard .page-header {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
   text-align: left;
   flex-shrink: 0;
 }
@@ -36,17 +36,24 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
+  margin-top: 2rem;
   flex-shrink: 0;
 }
 
 .metric-card {
   background: #ffffff;
   border-radius: 6px;
-  padding: 0.75rem;
+  padding: 1rem;
   border: 1px solid #e4e4e7;
   box-shadow: none;
   transition: all 0.15s ease;
   min-width: 0;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
 }
 
 .metric-card:hover {
@@ -81,11 +88,11 @@
 }
 
 .metric-change.up {
-  color: #059669;
+  color: #10b981;
 }
 
 .metric-change.down {
-  color: #dc2626;
+  color: #ef4444;
 }
 
 .metric-title {
@@ -98,8 +105,8 @@
 }
 
 .metric-value {
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 600;
   color: #18181b;
   margin: 0;
   font-variant-numeric: tabular-nums;
@@ -114,7 +121,7 @@
 .chart-card {
   background: #ffffff;
   border-radius: 6px;
-  padding: 0.75rem;
+  padding: 1rem;
   border: 1px solid #e4e4e7;
   box-shadow: none;
   display: flex;
@@ -122,6 +129,7 @@
   grid-column: span 1;
   min-height: 320px;
   position: relative;
+  transition: all 0.15s ease;
 }
 
 .chart-card.large {
@@ -136,20 +144,21 @@
   font-size: 0.875rem;
   font-weight: 500;
   color: #18181b;
-  margin: 0 0 0.1rem 0;
+  margin: 0 0 1rem 0;
   flex-shrink: 0;
 }
 
 .activity-card {
   background: #ffffff;
   border-radius: 6px;
-  padding: 0.75rem;
+  padding: 1rem;
   border: 1px solid #e4e4e7;
   box-shadow: none;
   grid-column: span 4;
   display: flex;
   flex-direction: column;
   min-height: 200px;
+  transition: all 0.15s ease;
 }
 
 .activity-title {
@@ -168,10 +177,11 @@
 .activity-item {
   display: flex;
   align-items: center;
-  gap: 0rem;
-  padding: 0;
+  gap: 0.5rem;
+  padding: 0.75rem 0;
   border-bottom: 1px solid #f3f4f6;
   position: relative;
+  transition: all 0.15s ease;
 }
 
 .activity-item:last-child {
@@ -194,17 +204,67 @@
 }
 
 .activity-text {
-  font-size: 0.75;
+  font-size: 0.875rem;
   color: #1f2937;
   margin: 0;
-  line-height: 1;
+  line-height: 1.5;
   flex: 1;
 }
 
 .activity-time {
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   color: #9ca3af;
   margin-left: 0.5rem;
-  margin-bottom: 0.1rem;
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
+
+/* 추가 전문적인 효과 */
+
+.chart-card:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-color: #d4d4d8;
+}
+
+.activity-card:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-color: #d4d4d8;
+}
+
+.activity-item:hover {
+  background-color: #f9fafb;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-card.large {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard {
+    padding: 0 1rem;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .metric-card {
+    padding: 1rem;
+  }
+  
+  .dashboard .page-title {
+    font-size: 1.75rem;
+  }
+}
+
