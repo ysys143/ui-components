@@ -19,8 +19,8 @@
   font-size: 1.125rem;
   font-weight: 600;
   color: #1f2937;
-  margin: 0 0 4px 0;
-  line-height: 20px;
+  margin: 0 0 8px 0;
+  line-height: 22px;
   text-align: left !important;
   width: 100%;
   align-self: flex-start;
@@ -30,7 +30,7 @@
   font-size: 0.875rem;
   color: #6b7280;
   margin: 0;
-  line-height: 40px;
+  line-height: 20px;
   text-align: left !important;
   width: 100%;
   align-self: flex-start;
@@ -41,6 +41,7 @@
   flex-direction: column;
   flex: 1;
   overflow-y: auto;
+  background-color: #fafafa;
 }
 
 .sidebar-link {

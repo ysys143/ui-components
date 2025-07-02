@@ -25,6 +25,10 @@ const Sidebar: React.FC = () => {
       description="사이드바 네비게이션입니다. 주요 메뉴와 페이지 간 이동을 담당합니다."
     >
       <aside className="sidebar">
+        <div className="sidebar-header">
+          <h3>페이지 네비게이션</h3>
+          <p className="sidebar-subtitle">애플리케이션의 주요 기능 페이지</p>
+        </div>
         <nav className="sidebar-nav">
           <div className="sidebar-section">
             <h4 className="sidebar-section-title">예시 애플리케이션</h4>
