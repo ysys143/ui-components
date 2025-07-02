@@ -40,7 +40,7 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({
   const [visibleComponent, setVisibleComponent] = useState<string | null>(null);
   const [hoveredComponent, setHoveredComponent] = useState<{ id: string; name: string } | null>(null);
   const [hoverPosition, setHoverPosition] = useState({ x: 0, y: 0 });
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hoverTimeoutRef = useRef<number | null>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [filteredItems, setFilteredItems] = useState<ComponentItem[]>([]);
   
@@ -553,7 +553,7 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({
         }
         
         // 해당 컴포넌트로 스크롤
-        setTimeout(() => {
+        window.setTimeout(() => {
           handleComponentClick(firstItem.id);
         }, 100);
       }
@@ -631,7 +631,7 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({
 
   const handleMouseEnter = (component: PageComponent, event: React.MouseEvent) => {
     if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
+      window.clearTimeout(hoverTimeoutRef.current);
     }
     
     const rect = event.currentTarget.getBoundingClientRect();
@@ -643,14 +643,14 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({
       y: rect.top 
     });
     
-    hoverTimeoutRef.current = setTimeout(() => {
+    hoverTimeoutRef.current = window.setTimeout(() => {
       setHoveredComponent(component);
     }, 300); // 0.3초로 단축
   };
 
   const handleMouseLeave = () => {
     if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
+      window.clearTimeout(hoverTimeoutRef.current);
     }
     setHoveredComponent(null);
   };
