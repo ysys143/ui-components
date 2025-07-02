@@ -1,0 +1,255 @@
+.component-demo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.demo-button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.demo-button:hover {
+  background-color: #0056b3;
+}
+
+.demo-button-outline {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  color: #007bff;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.demo-button-outline:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.demo-icon-button {
+  width: 40px;
+  height: 40px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.demo-icon-button:hover {
+  background-color: #e0e0e0;
+}
+
+.demo-checkbox,
+.demo-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.demo-radio-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.demo-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.demo-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.demo-switch input:checked + .switch-slider {
+  background-color: #007bff;
+}
+
+.demo-switch input:checked + .switch-slider:before {
+  transform: translateX(20px);
+}
+
+.demo-input,
+.demo-select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  width: 200px;
+}
+
+.demo-textarea {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  width: 200px;
+  resize: vertical;
+}
+
+.demo-slider-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.demo-slider {
+  width: 150px;
+}
+
+.slider-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  min-width: 30px;
+}
+
+.demo-rating {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.star {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.star:hover {
+  color: #ffc107;
+}
+
+.demo-tags {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tag {
+  padding: 0.25rem 0.75rem;
+  background-color: #e9ecef;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.demo-accordion {
+  width: 100%;
+}
+
+.accordion-header {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.demo-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  margin-bottom: -2px;
+}
+
+.tab.active {
+  border-bottom-color: #007bff;
+  color: #007bff;
+  font-weight: 500;
+}
+
+.demo-pagination {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.page-btn {
+  padding: 0.25rem 0.5rem;
+  background: none;
+  border: 1px solid #dee2e6;
+  cursor: pointer;
+  font-size: 0.875rem;
+  min-width: 32px;
+}
+
+.page-btn.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.demo-tooltip-trigger {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  cursor: help;
+  font-size: 0.875rem;
+}
+
+.demo-placeholder {
+  padding: 0.5rem 1rem;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: #6c757d;
+}

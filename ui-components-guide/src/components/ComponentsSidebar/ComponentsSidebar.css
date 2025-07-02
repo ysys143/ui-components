@@ -1,0 +1,154 @@
+.components-sidebar {
+  width: 280px;
+  background-color: #f3f4f6;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+  z-index: 100;
+}
+
+.components-sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.components-sidebar-header h3 {
+  font-size: 1rem;
+  font-weight: normal;
+  color: #374151;
+  margin: 0 0 0.25rem 0;
+}
+
+.components-sidebar-subtitle {
+  font-size: 0.75rem;
+  color: #374151;
+  margin: 0;
+}
+
+.components-list {
+  padding: 1rem;
+  flex: 1;
+}
+
+.component-category {
+  margin-bottom: 0.5rem;
+}
+
+.category-header {
+  width: 100%;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: normal;
+  color: #374151;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.category-header:hover {
+  /* No hover effect */
+}
+
+.category-title {
+  flex: 1;
+}
+
+.category-count {
+  font-size: 0.75rem;
+  background-color: #e5e7eb;
+  color: #374151;
+  padding: 0.125rem 0.5rem;
+  border-radius: 10px;
+}
+
+.category-items {
+  margin-left: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.component-item {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  color: #374151;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+  text-align: left;
+  position: relative;
+}
+
+.component-item:not(:disabled):hover {
+  /* No hover effect */
+  color: #374151;
+}
+
+.component-item.selected {
+  background-color: #3b82f6;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.component-item.selected .in-page-indicator {
+  color: #ffffff;
+}
+
+.component-item:disabled {
+  /* No disabled effect */
+  cursor: not-allowed;
+}
+
+.component-item.in-page {
+  color: #374151;
+  font-weight: normal;
+}
+
+.component-item.inactive {
+  color: #374151;
+  cursor: pointer;
+  /* No opacity effect */
+}
+
+.component-item.inactive:hover {
+  /* No hover effect */
+  color: #374151;
+}
+
+.component-name {
+  flex: 1;
+}
+
+.in-page-indicator {
+  color: #374151;
+  font-size: 0.5rem;
+}
+
+.sidebar-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  background-color: #ffffff;
+}
+
+.sidebar-hint {
+  font-size: 0.75rem;
+  color: #374151;
+  margin: 0;
+}

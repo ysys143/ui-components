@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm install react react-dom clsx)",
+      "Bash(mkdir:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:*)",
+      "Bash(find:*)",
+      "Bash(rg:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(grep:*)"
+    ],
+    "deny": []
+  }
+}
