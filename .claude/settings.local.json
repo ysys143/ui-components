@@ -10,7 +10,8 @@
       "Bash(find:*)",
       "Bash(rg:*)",
       "Bash(npm run typecheck:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "mcp__ide__getDiagnostics"
     ],
     "deny": []
   }

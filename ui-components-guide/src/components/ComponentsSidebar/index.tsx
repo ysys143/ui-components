@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronDown } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ComponentDescription from './ComponentDescription';
 import { componentsData } from '../../data/components';
 import './ComponentsSidebar.css';
@@ -14,15 +15,25 @@ interface ComponentsSidebarProps {
   onComponentClick: (componentId: string) => void;
   currentPage: string;
   onNavigateToPage?: (page: string) => void;
+  showToast?: (message: string) => void;
 }
 
-const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick, currentPage, onNavigateToPage }) => {
+const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick, currentPage, onNavigateToPage, showToast }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
-  const [selectedComponent, setSelectedComponent] = useState<string>('');
+  const [selectedComponent, setSelectedComponent] = useState<string>(() => {
+    // 초기값을 sessionStorage에서 가져오기
+    return sessionStorage.getItem('selectedComponent') || '';
+  });
   const [visibleComponent, setVisibleComponent] = useState<string | null>(null);
   const [hoveredComponent, setHoveredComponent] = useState<{ id: string; name: string } | null>(null);
   const [hoverPosition, setHoverPosition] = useState({ x: 0, y: 0 });
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  
+  // 현재 경로를 정확히 파악 (예: /patterns/detail)
+  const currentPath = location.pathname.slice(1) || 'dashboard';
 
   // 현재 페이지에서 사용되는 컴포넌트들 (실제 ComponentTooltip에서 사용하는 이름과 매핑)
   const pageComponents: Record<string, string[]> = {
@@ -60,21 +71,36 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
       'progress-bar', 'skeleton', 'tile', 'treeview', 'tabs', 'breadcrumb', 'pagination', 
       'navbar', 'sidebar', 'menu', 'link', 'accordion', 
       'alert', 'toast', 'list', 'structured-list', 'data-table', 'timeline', 'divider',
-      'modal', 'dropdown', 'tooltip'
+      'modal', 'dropdown', 'tooltip', 'dialog', 'notification', 'popover', 'empty-state',
+      'error-message', 'field-group', 'form-validation',
+      'default', 'hover', 'focus', 'active', 'disabled', 'loading', 'selected', 'error', 'success', 'warning'
     ],
     patterns: [
       'page-header', 'login-form', 'dashboard-layout', 'form-wizard', 'master-detail',
       'search-results', 'card-grid', 'settings-layout', 'empty-states'
     ],
+    'patterns/login': [
+      'page-header', 'login-form', 'dashboard-layout', 'form-wizard', 'master-detail',
+      'search-results', 'card-grid', 'settings-layout', 'empty-states'
+    ],
+    'patterns/dashboard': [
+      'page-header', 'login-form', 'dashboard-layout', 'form-wizard', 'master-detail',
+      'search-results', 'card-grid', 'settings-layout', 'empty-states'
+    ],
+    'patterns/detail': [
+      'page-header', 'login-form', 'dashboard-layout', 'form-wizard', 'master-detail',
+      'search-results', 'card-grid', 'settings-layout', 'empty-states'
+    ],
     'states-accessibility': [
       'page-header', 'button-states', 'input-states', 'validation-messages',
-      'focus-indicators', 'aria-examples', 'screen-reader', 'contrast-ratios',
-      'accessibility-options', 'device-support', 'error-handling'
+      'focus-indicators', 'aria-roles', 'screen-reader', 'contrast-ratios',
+      'accessibility-options', 'device-support', 'error-handling',
+      'focus-ring', 'keyboard-nav', 'skip-content'
     ]
   };
 
   // 현재 페이지에서 사용되는 컴포넌트들
-  const currentPageComponents = pageComponents[currentPage] || [];
+  const currentPageComponents = pageComponents[currentPath] || pageComponents[currentPage] || [];
   
   // 컴포넌트가 어느 페이지에 있는지 찾기
   const findComponentPage = (componentId: string): string | null => {
@@ -98,6 +124,9 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
         'date-picker': ['date-picker'],
         'file-uploader': ['file-uploader'],
         'checkbox': ['checkbox'],
+        'login-page': ['login-form'],
+        'dashboard': ['dashboard-layout'],
+        'detail-page': ['master-detail'],
         'radio-button': ['radio-button'],
         'switch': ['switch'],
         'slider': ['slider'],
@@ -140,12 +169,18 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
         'states': ['button-states', 'input-states'],
         'validation': ['validation-messages'],
         'focus-management': ['focus-indicators'],
-        'aria': ['aria-examples'],
         'screen-reader': ['screen-reader'],
         'color-contrast': ['contrast-ratios'],
         'theme-customization': ['accessibility-options'],
         'responsive-design': ['device-support'],
-        'error-recovery': ['error-handling']
+        'error-recovery': ['error-handling'],
+        'error-message': ['error-message'],
+        'field-group': ['field-group'],
+        'form-validation': ['form-validation'],
+        'aria-roles': ['aria-roles'],
+        'focus-ring': ['focus-ring'],
+        'keyboard-nav': ['keyboard-nav'],
+        'skip-content': ['skip-content']
       };
       
     // 각 페이지를 순회하면서 컴포넌트 찾기
@@ -238,7 +273,28 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
       'navbar': ['navbar-example'],
       'sidebar': ['sidebar-example'],
       'menu': ['menu'],
-      'link': ['link']
+      'link': ['link'],
+      'dialog': ['dialog'],
+      'notification': ['notification'],
+      'popover': ['popover'],
+      'empty-state': ['empty-state'],
+      'error-message': ['error-message'],
+      'field-group': ['field-group'],
+      'form-validation': ['form-validation'],
+      'aria-roles': ['aria-roles'],
+      'focus-ring': ['focus-ring'],
+      'keyboard-nav': ['keyboard-nav'],
+      'skip-content': ['skip-content'],
+      'default': ['default'],
+      'hover': ['hover'],
+      'focus': ['focus'],
+      'active': ['active'],
+      'disabled': ['disabled'],
+      'loading': ['loading'],
+      'selected': ['selected'],
+      'error': ['error'],
+      'success': ['success'],
+      'warning': ['warning']
     };
     
     return pageSpecificIds[componentId] || [componentId];
@@ -290,11 +346,13 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
       'motion': ['motion-system', 'transition-duration', 'easing-functions'],
       'grid-system': ['grid-system'],
       'breakpoints': ['breakpoints'],
+      'login-page': ['login-form'],
       'dashboard-layout': ['dashboard-layout'],
+      'detail-page': ['master-detail'],
       'master-detail': ['master-detail'],
       'search-results': ['search-results'],
       'card-grid': ['card-grid'],
-      'settings-page': ['settings-layout'],
+      'settings-layout': ['settings-layout'],
       'empty-states': ['empty-states'],
       'states': ['button-states', 'input-states'],
       'validation': ['validation-messages'],
@@ -314,7 +372,28 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
       'navbar': ['navbar-example'],
       'sidebar': ['sidebar-example'],
       'menu': ['menu'],
-      'link': ['link']
+      'link': ['link'],
+      'dialog': ['dialog'],
+      'notification': ['notification'],
+      'popover': ['popover'],
+      'empty-state': ['empty-state'],
+      'error-message': ['error-message'],
+      'field-group': ['field-group'],
+      'form-validation': ['form-validation'],
+      'aria-roles': ['aria-roles'],
+      'focus-ring': ['focus-ring'],
+      'keyboard-nav': ['keyboard-nav'],
+      'skip-content': ['skip-content'],
+      'default': ['default'],
+      'hover': ['hover'],
+      'focus': ['focus'],
+      'active': ['active'],
+      'disabled': ['disabled'],
+      'loading': ['loading'],
+      'selected': ['selected'],
+      'error': ['error'],
+      'success': ['success'],
+      'warning': ['warning']
     };
     
     // 직접 매칭
@@ -328,6 +407,28 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
   useEffect(() => {
     // 기본적으로 모든 카테고리를 펼침
     setExpandedCategories(componentsData.map(cat => cat.id));
+    
+    // 저장된 스크롤 위치 복원
+    const savedScrollPosition = sessionStorage.getItem('sidebarScrollPosition');
+    if (savedScrollPosition && sidebarRef.current) {
+      const scrollableElement = sidebarRef.current.querySelector('.components-list');
+      if (scrollableElement) {
+        scrollableElement.scrollTop = parseInt(savedScrollPosition, 10);
+      }
+    }
+  }, []);
+  
+  // 스크롤 위치 저장
+  useEffect(() => {
+    const scrollableElement = sidebarRef.current?.querySelector('.components-list');
+    if (!scrollableElement) return;
+    
+    const handleScroll = () => {
+      sessionStorage.setItem('sidebarScrollPosition', scrollableElement.scrollTop.toString());
+    };
+    
+    scrollableElement.addEventListener('scroll', handleScroll);
+    return () => scrollableElement.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -353,7 +454,7 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
     const observer = new IntersectionObserver(
       (entries) => {
         // 가장 중앙에 가까운 요소 찾기
-        let mostCenteredEntry = null;
+        let mostCenteredEntry: IntersectionObserverEntry | null = null;
         let minDistance = Infinity;
         
         entries.forEach((entry) => {
@@ -419,6 +520,34 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
   const handleComponentClick = (componentId: string) => {
     // 단일 선택 - 클릭한 컴포넌트만 선택
     setSelectedComponent(componentId);
+    sessionStorage.setItem('selectedComponent', componentId); // 선택 상태 저장
+    console.log('Selected component:', componentId); // 디버깅용
+    
+    // Toast 클릭 시 토스트 메시지 표시
+    if (componentId === 'toast' && showToast) {
+      showToast('토스트 예제로 이동합니다');
+    }
+    
+    // 특별한 페이지로 이동하는 경우 처리
+    const specialRoutes: Record<string, string> = {
+      'login-page': '/patterns/login',
+      'dashboard-layout': '/dashboard',  // 실제 대시보드 페이지로 이동
+      'detail-page': '/patterns/detail'
+    };
+    
+    if (specialRoutes[componentId]) {
+      // React Router를 사용하여 이동
+      navigate(specialRoutes[componentId]);
+      return;
+    }
+    
+    // 현재 patterns의 하위 페이지에 있고, patterns 메인 페이지의 항목을 클릭한 경우
+    if (currentPath.startsWith('patterns/') && ['form-wizard', 'master-detail', 'search-results', 'card-grid', 'settings-layout', 'empty-states'].includes(componentId)) {
+      // patterns 메인 페이지로 이동
+      sessionStorage.setItem('targetComponent', componentId);
+      navigate('/patterns');
+      return;
+    }
     
     const isActive = isComponentActive(componentId);
     
@@ -471,7 +600,7 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
   };
 
   return (
-    <aside className="components-sidebar">
+    <aside className="components-sidebar" ref={sidebarRef}>
       <div className="components-sidebar-header">
         <h3>UI 컴포넌트 전체 목록</h3>
         <p className="components-sidebar-subtitle">클릭하여 해당 컴포넌트로 이동</p>

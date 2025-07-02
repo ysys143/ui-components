@@ -8,7 +8,10 @@ import './Layout.css';
 const Layout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const currentPage = location.pathname.split('/')[1] || 'dashboard';
+  // 중첩된 경로도 처리 (예: /patterns/detail -> patterns)
+  const pathSegments = location.pathname.split('/').filter(Boolean);
+  const currentPage = pathSegments[0] || 'dashboard';
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   
   const handleNavigateToPage = (page: string) => {
     navigate(`/${page}`);
@@ -31,6 +34,22 @@ const Layout: React.FC = () => {
     }
   };
 
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => {
+        setToastMessage(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
+
 
   return (
     <div className="layout">
@@ -40,12 +59,20 @@ const Layout: React.FC = () => {
           onComponentClick={handleComponentClick}
           currentPage={currentPage}
           onNavigateToPage={handleNavigateToPage}
+          showToast={showToast}
         />
         <Sidebar />
         <main className="layout-main">
           <Outlet />
         </main>
       </div>
+      {toastMessage && (
+        <div className="toast-container">
+          <div className="toast-message">
+            {toastMessage}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

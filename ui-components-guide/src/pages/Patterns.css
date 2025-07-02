@@ -1,16 +1,24 @@
 /* Page styles */
-.page-header {
-  margin-bottom: 2rem;
+.patterns-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
-.page-title {
+.patterns-page .page-header {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.patterns-page .page-title {
   font-size: 2rem;
   font-weight: 700;
   color: #1f2937;
   margin: 0 0 0.5rem 0;
 }
 
-.page-description {
+.patterns-page .page-description {
   font-size: 1rem;
   color: #6b7280;
   margin: 0;
@@ -21,11 +29,6 @@
   font-weight: 600;
   color: #1f2937;
   margin: 0 0 1.5rem 0;
-}
-
-.patterns-page {
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 .pattern-section {
@@ -1114,4 +1117,16 @@
 
 .switch input:checked + .switch-slider::after {
   transform: translateX(20px);
+}
+
+/* Theming Subsections */
+.subsection {
+  margin: 3rem 0;
+}
+
+.subsection-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 1.5rem;
 }

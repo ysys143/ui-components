@@ -12,7 +12,7 @@ const Sidebar: React.FC = () => {
     { path: '/settings', icon: Settings, label: '설정', description: '다양한 폼 컴포넌트를 활용한 설정 페이지입니다.' },
     { path: '/foundation', icon: Layers, label: 'Foundation', description: '디자인 시스템의 기초 요소들입니다.' },
     { path: '/components', icon: Grid, label: 'Components', description: '모든 UI 컴포넌트의 인터랙티브 데모입니다.' },
-    { path: '/patterns', icon: Layout, label: 'Patterns', description: '일반적인 UI 패턴과 컴포넌트 조합입니다.' },
+    { path: '/patterns', icon: Layout, label: 'Patterns', description: '실제 애플리케이션 화면과 복합적인 레이아웃 패턴입니다.' },
     { path: '/states-accessibility', icon: Accessibility, label: 'States & A11y', description: 'UI 상태와 접근성 가이드라인입니다.' },
   ];
 

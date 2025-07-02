@@ -15,15 +15,10 @@ const StatesAccessibility: React.FC = () => {
 
   return (
     <div className="states-page">
-      <ComponentTooltip
-        component="Page Header"
-        description="States & Accessibility 페이지의 헤더입니다."
-      >
-        <div className="page-header">
-          <h1 className="page-title">States & Accessibility</h1>
-          <p className="page-description">UI 상태와 접근성 가이드라인</p>
-        </div>
-      </ComponentTooltip>
+      <div className="page-header">
+        <h1 className="page-title">States & Accessibility</h1>
+        <p className="page-description">UI 상태와 접근성 가이드라인</p>
+      </div>
 
       {/* Interactive States Section */}
       <section className="states-section">
@@ -231,7 +226,7 @@ const StatesAccessibility: React.FC = () => {
         </div>
         
         <ComponentTooltip component="ARIA Examples" description="접근성을 위한 ARIA 속성 예시입니다.">
-          <div className="aria-examples">
+          <div className="aria-examples" data-component="aria-roles">
             <div className="aria-item">
               <h4>ARIA Labels</h4>
               <p className="aria-item-description">
@@ -552,6 +547,249 @@ const StatesAccessibility: React.FC = () => {
                 />
                 <p className="help-text">Format: (123) 456-7890</p>
               </div>
+            </div>
+          </div>
+        </ComponentTooltip>
+      </section>
+
+      {/* Focus Ring Section */}
+      <section className="states-section">
+        <h2 className="section-title">Focus Ring</h2>
+        
+        <ComponentTooltip component="Focus Ring" description="키보드 탐색을 위한 포커스 링입니다.">
+          <div className="focus-ring-demo" data-component="focus-ring">
+            <div className="focus-ring-intro">
+              <p className="focus-description">
+                Focus Ring은 키보드로 탐색할 때 현재 포커스된 요소를 시각적으로 표시하는 중요한 접근성 기능입니다.
+                모든 인터랙티브 요소에는 명확한 포커스 표시가 있어야 합니다.
+              </p>
+            </div>
+
+            <div className="focus-examples">
+              <h4>Focus Ring 스타일 예시</h4>
+              
+              <div className="focus-example-grid">
+                <div className="focus-item">
+                  <h5>Default Browser Focus</h5>
+                  <button className="btn-default-focus">Default Focus</button>
+                  <input type="text" className="input-default-focus" placeholder="Default focus" />
+                </div>
+
+                <div className="focus-item">
+                  <h5>Custom Focus Ring</h5>
+                  <button className="btn-custom-focus">Custom Focus</button>
+                  <input type="text" className="input-custom-focus" placeholder="Custom focus" />
+                </div>
+
+                <div className="focus-item">
+                  <h5>Focus-Visible Only</h5>
+                  <button className="btn-focus-visible">Focus Visible</button>
+                  <p className="focus-note">키보드 탐색 시에만 포커스 링 표시</p>
+                </div>
+
+                <div className="focus-item">
+                  <h5>High Contrast Focus</h5>
+                  <button className="btn-high-contrast-focus">High Contrast</button>
+                  <div className="card-high-contrast-focus">
+                    <p>Card with high contrast focus</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="focus-best-practices">
+                <h4>Focus Ring 모범 사례</h4>
+                <ul>
+                  <li>최소 2px 너비의 포커스 링 사용</li>
+                  <li>배경색과 충분한 대비 확보 (3:1 이상)</li>
+                  <li>:focus-visible 의사 클래스 활용</li>
+                  <li>절대 outline: none만 사용하지 말 것</li>
+                  <li>복잡한 컴포넌트는 내부 포커스 관리 필요</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </ComponentTooltip>
+      </section>
+
+      {/* Keyboard Navigation Section */}
+      <section className="states-section">
+        <h2 className="section-title">Keyboard Navigation</h2>
+        
+        <ComponentTooltip component="Keyboard Navigation" description="키보드로 탐색 가능한 인터페이스입니다.">
+          <div className="keyboard-nav-demo" data-component="keyboard-nav">
+            <div className="keyboard-intro">
+              <p className="keyboard-description">
+                모든 인터랙티브 요소는 키보드만으로도 접근하고 조작할 수 있어야 합니다.
+                Tab, Arrow Keys, Enter, Space 등의 키를 활용한 탐색 패턴을 제공합니다.
+              </p>
+            </div>
+
+            <div className="keyboard-examples">
+              <div className="keyboard-item">
+                <h4>Tab Navigation</h4>
+                <div className="tab-nav-demo">
+                  <button className="btn btn-primary">First Button</button>
+                  <input type="text" className="form-input" placeholder="Text Input" />
+                  <select className="form-select">
+                    <option>Option 1</option>
+                    <option>Option 2</option>
+                  </select>
+                  <button className="btn btn-secondary">Last Button</button>
+                </div>
+                <p className="keyboard-hint">Tab 키로 순차적 탐색, Shift+Tab으로 역방향 탐색</p>
+              </div>
+
+              <div className="keyboard-item">
+                <h4>Arrow Key Navigation</h4>
+                <div className="arrow-nav-demo">
+                  <div className="radio-group-nav">
+                    <label><input type="radio" name="nav-radio" /> Option A</label>
+                    <label><input type="radio" name="nav-radio" /> Option B</label>
+                    <label><input type="radio" name="nav-radio" /> Option C</label>
+                  </div>
+                  <p className="keyboard-hint">화살표 키로 라디오 버튼 간 이동</p>
+                </div>
+              </div>
+
+              <div className="keyboard-item">
+                <h4>Menu Navigation</h4>
+                <div className="menu-nav-demo">
+                  <nav role="navigation" aria-label="Main menu">
+                    <ul className="keyboard-menu">
+                      <li><a href="#" className="menu-item">Home</a></li>
+                      <li><a href="#" className="menu-item">Products</a></li>
+                      <li><a href="#" className="menu-item">Services</a></li>
+                      <li><a href="#" className="menu-item">Contact</a></li>
+                    </ul>
+                  </nav>
+                  <p className="keyboard-hint">Tab으로 메뉴 진입, 화살표 키로 항목 간 이동</p>
+                </div>
+              </div>
+
+              <div className="keyboard-shortcuts">
+                <h4>일반적인 키보드 단축키</h4>
+                <table className="shortcuts-table">
+                  <thead>
+                    <tr>
+                      <th>키</th>
+                      <th>동작</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><kbd>Tab</kbd></td>
+                      <td>다음 포커스 가능 요소로 이동</td>
+                    </tr>
+                    <tr>
+                      <td><kbd>Shift + Tab</kbd></td>
+                      <td>이전 포커스 가능 요소로 이동</td>
+                    </tr>
+                    <tr>
+                      <td><kbd>Enter</kbd></td>
+                      <td>버튼 클릭, 링크 이동</td>
+                    </tr>
+                    <tr>
+                      <td><kbd>Space</kbd></td>
+                      <td>체크박스 토글, 버튼 클릭</td>
+                    </tr>
+                    <tr>
+                      <td><kbd>Esc</kbd></td>
+                      <td>모달/팝업 닫기</td>
+                    </tr>
+                    <tr>
+                      <td><kbd>Arrow Keys</kbd></td>
+                      <td>목록/메뉴 내 탐색</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </ComponentTooltip>
+      </section>
+
+      {/* Skip to Content Section */}
+      <section className="states-section">
+        <h2 className="section-title">Skip to Content</h2>
+        
+        <ComponentTooltip component="Skip to Content" description="콘텐츠로 바로 이동하는 기능입니다.">
+          <div className="skip-content-demo" data-component="skip-content">
+            <div className="skip-intro">
+              <p className="skip-description">
+                Skip links는 키보드 사용자가 반복적인 탐색 요소를 건너뛰고 
+                주요 콘텐츠로 빠르게 이동할 수 있게 해주는 중요한 접근성 기능입니다.
+              </p>
+            </div>
+
+            <div className="skip-examples">
+              <div className="skip-item">
+                <h4>기본 Skip Link</h4>
+                <div className="skip-demo-wrapper">
+                  <div className="demo-info-box">
+                    <p><strong>시작하려면:</strong> 아래 "Start Demo" 버튼을 클릭한 후 Tab 키를 누르세요</p>
+                  </div>
+                  
+                  <div className="skip-demo-container">
+                    <button className="demo-start-button" onClick={(e) => {
+                      const container = e.currentTarget.parentElement;
+                      const skipLink = container?.querySelector('.skip-link-single') as HTMLElement;
+                      skipLink?.focus();
+                    }}>Start Demo</button>
+                    
+                    <a href="#demo-main-content" className="skip-link-single">Skip to main content</a>
+                    
+                    {/* Header Section */}
+                    <header className="demo-header">
+                      <div className="demo-logo">My Website</div>
+                      <nav className="demo-nav" aria-label="Main navigation">
+                        <a href="#" onClick={(e) => e.preventDefault()}>Home</a>
+                        <a href="#" onClick={(e) => e.preventDefault()}>About</a>
+                        <a href="#" onClick={(e) => e.preventDefault()}>Services</a>
+                        <a href="#" onClick={(e) => e.preventDefault()}>Contact</a>
+                      </nav>
+                    </header>
+                    
+                    {/* Main Content */}
+                    <main id="demo-main-content" className="demo-main" tabIndex="-1">
+                      <h5>Main Content Area</h5>
+                      <p>Skip link를 사용하면 헤더와 네비게이션을 건너뛰고 여기로 바로 이동합니다.</p>
+                      <p>키보드 사용자는 매 페이지마다 반복되는 네비게이션을 Tab으로 하나씩 거치지 않아도 됩니다.</p>
+                      <button className="demo-reset-button" onClick={(e) => {
+                        const container = e.currentTarget.closest('.skip-demo-container');
+                        const startButton = container?.querySelector('.demo-start-button') as HTMLElement;
+                        startButton?.focus();
+                      }}>다시 시작</button>
+                    </main>
+                  </div>
+                </div>
+                
+                <div className="skip-instructions">
+                  <h5>Skip Link 작동 방식:</h5>
+                  <ol className="skip-steps">
+                    <li><strong>Start Demo 클릭</strong>: 데모가 시작되고 Skip Link에 포커스가 갑니다</li>
+                    <li><strong>Skip Link 표시</strong>: 화면 상단 중앙에 "Skip to main content" 링크가 나타납니다</li>
+                    <li><strong>선택 옵션</strong>:
+                      <ul>
+                        <li>Enter 키: 메인 콘텐츠로 바로 이동</li>
+                        <li>Tab 키: Skip Link를 건너뛰고 네비게이션으로 이동</li>
+                      </ul>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+
+              <div className="skip-best-practices">
+                <h4>Skip Link 모범 사례</h4>
+                <ul>
+                  <li><strong>위치</strong>: 페이지 최상단에 위치시켜 첫 번째 탭 포커스를 받도록 함</li>
+                  <li><strong>가시성</strong>: 평상시 화면에서 숨기되, 포커스 시 명확하게 표시</li>
+                  <li><strong>텍스트</strong>: "Skip to main content"처럼 명확하고 설명적인 텍스트 사용</li>
+                  <li><strong>타겟</strong>: 이동할 요소에 적절한 ID와 tabindex="-1" 설정</li>
+                  <li><strong>디자인</strong>: 충분한 대비와 크기로 시각적으로도 명확하게 표시</li>
+                  <li><strong>다중 링크</strong>: 필요시 navigation, search, footer 등으로의 추가 링크 제공</li>
+                </ul>
+              </div>
+
             </div>
           </div>
         </ComponentTooltip>

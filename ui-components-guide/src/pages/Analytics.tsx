@@ -25,15 +25,16 @@ const Analytics: React.FC = () => {
 
   return (
     <div className="analytics">
+      <div className="page-header">
+        <h1 className="page-title">분석</h1>
+        <p className="page-description">웹사이트 트래픽과 사용자 행동을 분석하세요</p>
+      </div>
+
       <ComponentTooltip
-        component="Page Header with Filters"
-        description="페이지 제목과 필터 컨트롤을 포함한 헤더입니다."
+        component="Analytics Header Controls"
+        description="분석 페이지의 날짜 필터와 내보내기 컨트롤입니다."
       >
         <div className="analytics-header">
-          <div>
-            <h1 className="page-title">분석</h1>
-            <p className="page-description">웹사이트 트래픽과 사용자 행동을 분석하세요</p>
-          </div>
           <div className="header-controls">
             <ComponentTooltip
               component="Date Range Picker"

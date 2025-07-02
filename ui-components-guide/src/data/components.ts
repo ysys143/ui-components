@@ -117,19 +117,7 @@ export const componentsData: ComponentCategory[] = [
       { id: 'form-validation', name: 'Form Validation', description: '폼 유효성 검사 패턴입니다.' }
     ]
   },
-  {
-    id: 'patterns',
-    title: 'Patterns',
-    description: '컴포넌트 조합 패턴',
-    items: [
-      { id: 'login-page', name: 'Login Page', description: '로그인 페이지 패턴입니다.' },
-      { id: 'dashboard', name: 'Dashboard Layout', description: '대시보드 레이아웃 패턴입니다.' },
-      { id: 'detail-page', name: 'Detail Page', description: '상세 페이지 템플릿입니다.' },
-      { id: 'settings-page', name: 'Settings Page', description: '설정 페이지 패턴입니다.' },
-      { id: 'form-wizard', name: 'Form Wizard', description: '단계별 폼 위저드입니다.' },
-      { id: 'master-detail', name: 'Master-Detail View', description: '마스터-디테일 뷰 패턴입니다.' }
-    ]
-  },
+
   {
     id: 'states',
     title: 'States',
@@ -158,17 +146,6 @@ export const componentsData: ComponentCategory[] = [
       { id: 'screen-reader', name: 'Screen Reader Support', description: '스크린 리더 지원 기능입니다.' },
       { id: 'color-contrast', name: 'Color Contrast', description: '적절한 색상 대비를 제공합니다.' },
       { id: 'skip-content', name: 'Skip to Content', description: '콘텐츠로 바로 이동하는 기능입니다.' }
-    ]
-  },
-  {
-    id: 'theming',
-    title: 'Theming & Customization',
-    description: '테마 및 커스터마이징',
-    items: [
-      { id: 'design-tokens', name: 'Design Tokens', description: '디자인 시스템의 기본 토큰입니다.' },
-      { id: 'theme-variables', name: 'Theme Variables', description: '라이트/다크 테마 변수입니다.' },
-      { id: 'component-variants', name: 'Component Variants', description: '컴포넌트의 다양한 변형입니다.' },
-      { id: 'global-override', name: 'Global Override', description: '전역 스타일 오버라이드 규칙입니다.' }
     ]
   }
 ];

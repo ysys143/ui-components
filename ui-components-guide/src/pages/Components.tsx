@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Search, Upload, Calendar, Star, Plus, Minus, ChevronDown, 
   X, Check, AlertCircle, Info, ChevronRight, Download, Play,
   Pause, SkipForward, SkipBack, Volume2, Settings, Home,
   User, Mail, Phone, MapPin, Globe, Heart, Share2, Bookmark,
   MoreVertical, HelpCircle, Folder, FolderOpen, File, Grid3X3,
-  Menu as MenuIcon, ExternalLink, ArrowRight
+  Menu as MenuIcon, ExternalLink, ArrowRight, Bell, FileX, XCircle
 } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
 import './Components.css';
 
 const Components: React.FC = () => {
+  const navigate = useNavigate();
   const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({
     switch1: false,
     switch2: true,
@@ -30,9 +32,21 @@ const Components: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [showPopover, setShowPopover] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const [autocompleteValue, setAutocompleteValue] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>({ node1: true });
+  
+  // Form validation states
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    bio: ''
+  });
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [formTouched, setFormTouched] = useState<Record<string, boolean>>({});
   
   const suggestions = ['Apple', 'Application', 'Apricot', 'Banana', 'Berry', 'Blueberry', 'Cherry', 'Chocolate', 'Citrus', 'Date', 'Dragon Fruit'];
 
@@ -46,6 +60,76 @@ const Components: React.FC = () => {
   
   const toggleTreeNode = (nodeId: string) => {
     setExpandedNodes(prev => ({ ...prev, [nodeId]: !prev[nodeId] }));
+  };
+
+  // Form validation functions
+  const validateField = (name: string, value: string) => {
+    const errors: Record<string, string> = {};
+    
+    switch (name) {
+      case 'username':
+        if (!value) {
+          errors.username = 'Username is required';
+        } else if (value.length < 3 || value.length > 20) {
+          errors.username = 'Username must be 3-20 characters';
+        }
+        break;
+      case 'password':
+        if (!value) {
+          errors.password = 'Password is required';
+        } else if (value.length < 8) {
+          errors.password = 'Password must be at least 8 characters';
+        }
+        break;
+      case 'bio':
+        if (value.length > 500) {
+          errors.bio = 'Bio must not exceed 500 characters';
+        }
+        break;
+    }
+    
+    return errors[name] || '';
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Validate on change if field was touched
+    if (formTouched[name]) {
+      const error = validateField(name, value);
+      setFormErrors(prev => ({ ...prev, [name]: error }));
+    }
+  };
+
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormTouched(prev => ({ ...prev, [name]: true }));
+    
+    const error = validateField(name, value);
+    setFormErrors(prev => ({ ...prev, [name]: error }));
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validate all fields
+    const errors: Record<string, string> = {};
+    Object.keys(formData).forEach(key => {
+      const error = validateField(key, formData[key as keyof typeof formData]);
+      if (error) errors[key] = error;
+    });
+    
+    setFormErrors(errors);
+    setFormTouched({ username: true, password: true, bio: true });
+    
+    if (Object.keys(errors).length === 0) {
+      alert('Form submitted successfully!');
+      // Reset form
+      setFormData({ username: '', password: '', bio: '' });
+      setFormErrors({});
+      setFormTouched({});
+    }
   };
 
   return (
@@ -232,7 +316,7 @@ const Components: React.FC = () => {
                     onChange={() => handleToggle('check2')}
                   />
                   <span className="checkbox-mark"></span>
-                  <span>Option 2 (checked)</span>
+                  <span>Option 2</span>
                 </label>
                 <label className="checkbox">
                   <input 
@@ -252,7 +336,7 @@ const Components: React.FC = () => {
               <label className="form-label">Radio Buttons</label>
               <div className="radio-group">
                 {['option1', 'option2', 'option3'].map((option) => (
-                  <label key={option} className="checkbox">
+                  <label key={option} className="radio">
                     <input 
                       type="radio" 
                       name="radio-group"
@@ -271,24 +355,26 @@ const Components: React.FC = () => {
           <ComponentTooltip component="Switch" description="토글 스위치입니다.">
             <div className="form-group">
               <label className="form-label">Switches</label>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label className="switch">
+              <div className="switch-group">
+                <label className="switch" data-switch="switch1">
                   <input 
                     type="checkbox"
+                    id="switch1"
                     checked={toggleStates.switch1}
                     onChange={() => handleToggle('switch1')}
                   />
                   <span className="switch-slider"></span>
                   <span className="switch-label">Enable notifications</span>
                 </label>
-                <label className="switch">
+                <label className="switch" data-switch="switch2">
                   <input 
                     type="checkbox"
+                    id="switch2"
                     checked={toggleStates.switch2}
                     onChange={() => handleToggle('switch2')}
                   />
                   <span className="switch-slider"></span>
-                  <span className="switch-label">Dark mode (enabled)</span>
+                  <span className="switch-label">Dark mode</span>
                 </label>
               </div>
             </div>
@@ -343,6 +429,148 @@ const Components: React.FC = () => {
                 </button>
               </div>
             </div>
+          </ComponentTooltip>
+        </div>
+      </section>
+
+      {/* Form Components Section */}
+      <section className="component-section">
+        <h2 className="section-title">Form Components</h2>
+        <div className="component-grid-vertical">
+          <ComponentTooltip component="Form" description="폼 컨테이너와 레이아웃입니다. 설정 페이지 예제를 확인하세요.">
+            <div 
+              className="form-example-link" 
+              onClick={() => navigate('/forms/example')}
+              style={{ cursor: 'pointer', padding: '1rem', border: '2px dashed #3b82f6', borderRadius: '8px', textAlign: 'center', color: '#3b82f6' }}
+            >
+              <Settings size={24} style={{ marginBottom: '0.5rem' }} />
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem' }}>Form 컴포넌트 예제</h3>
+              <p style={{ margin: 0, fontSize: '0.875rem' }}>설정 페이지에서 실제 사용 예제를 확인하세요</p>
+              <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', fontWeight: 'bold' }}>클릭하여 예제 페이지로 이동</p>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Form Label" description="입력 필드의 레이블입니다. 설정 페이지 예제를 확인하세요.">
+            <div 
+              className="form-example-link" 
+              onClick={() => navigate('/forms/example')}
+              style={{ cursor: 'pointer', padding: '1rem', border: '2px dashed #10b981', borderRadius: '8px', textAlign: 'center', color: '#10b981' }}
+            >
+              <User size={24} style={{ marginBottom: '0.5rem' }} />
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem' }}>Form Label 컴포넌트 예제</h3>
+              <p style={{ margin: 0, fontSize: '0.875rem' }}>설정 페이지에서 다양한 레이블 사용법을 확인하세요</p>
+              <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', fontWeight: 'bold' }}>클릭하여 예제 페이지로 이동</p>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Helper Text" description="입력 필드에 대한 도움말 텍스트입니다. 설정 페이지 예제를 확인하세요.">
+            <div 
+              className="form-example-link" 
+              onClick={() => navigate('/forms/example')}
+              style={{ cursor: 'pointer', padding: '1rem', border: '2px dashed #f59e0b', borderRadius: '8px', textAlign: 'center', color: '#f59e0b' }}
+            >
+              <Info size={24} style={{ marginBottom: '0.5rem' }} />
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem' }}>Helper Text 컴포넌트 예제</h3>
+              <p style={{ margin: 0, fontSize: '0.875rem' }}>설정 페이지에서 다양한 도움말 텍스트를 확인하세요</p>
+              <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.75rem', fontWeight: 'bold' }}>클릭하여 예제 페이지로 이동</p>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Error Message" description="유효성 검사 오류 메시지입니다.">
+            <div className="form-group" data-component="error-message">
+              <label className="form-label">Email Address</label>
+              <input type="email" className="form-input state-error" value="invalid@email" readOnly />
+              <span className="form-error-message">Please enter a valid email address</span>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Field Group" description="관련 필드를 그룹화합니다.">
+            <div className="field-group" data-component="field-group">
+              <h3 className="field-group-title">Personal Information</h3>
+              <div className="field-group-content">
+                <div className="form-group">
+                  <label className="form-label">First Name</label>
+                  <input type="text" className="form-input" placeholder="John" />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Last Name</label>
+                  <input type="text" className="form-input" placeholder="Doe" />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Email</label>
+                  <input type="email" className="form-input" placeholder="john.doe@example.com" />
+                </div>
+              </div>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Form Validation" description="폼 유효성 검사 패턴입니다.">
+            <form className="form-validation-example" data-component="form-validation" onSubmit={handleFormSubmit}>
+              <div className="form-group">
+                <label className="form-label required">Username</label>
+                <input 
+                  type="text" 
+                  name="username"
+                  className={`form-input ${formErrors.username && formTouched.username ? 'state-error' : ''}`}
+                  placeholder="Enter username" 
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  onBlur={handleInputBlur}
+                />
+                {formErrors.username && formTouched.username ? (
+                  <span className="form-error-message">{formErrors.username}</span>
+                ) : (
+                  <span className="form-helper-text">Username must be 3-20 characters</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label className="form-label required">Password</label>
+                <input 
+                  type="password" 
+                  name="password"
+                  className={`form-input ${formErrors.password && formTouched.password ? 'state-error' : ''}`}
+                  placeholder="Enter password" 
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  onBlur={handleInputBlur}
+                />
+                {formErrors.password && formTouched.password ? (
+                  <span className="form-error-message">{formErrors.password}</span>
+                ) : (
+                  <span className="form-helper-text">Password must be at least 8 characters</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label className="form-label">Bio</label>
+                <textarea 
+                  name="bio"
+                  className={`form-textarea ${formErrors.bio && formTouched.bio ? 'state-error' : ''}`}
+                  placeholder="Tell us about yourself..." 
+                  value={formData.bio}
+                  onChange={handleInputChange}
+                  onBlur={handleInputBlur}
+                  rows={4}
+                />
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  {formErrors.bio && formTouched.bio ? (
+                    <span className="form-error-message">{formErrors.bio}</span>
+                  ) : (
+                    <span className="form-helper-text">Optional - Max 500 characters</span>
+                  )}
+                  <span className="form-helper-text" style={{ fontSize: '0.75rem' }}>
+                    {formData.bio.length}/500
+                  </span>
+                </div>
+              </div>
+              <div className="form-actions">
+                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="button" className="btn btn-ghost" onClick={() => {
+                  setFormData({ username: '', password: '', bio: '' });
+                  setFormErrors({});
+                  setFormTouched({});
+                }}>Reset</button>
+              </div>
+            </form>
           </ComponentTooltip>
         </div>
       </section>
@@ -702,6 +930,15 @@ const Components: React.FC = () => {
                 </div>
               </div>
             </ComponentTooltip>
+
+            <ComponentTooltip component="Empty State" description="비어있는 상태 표시입니다.">
+              <div className="empty-state" data-component="empty-state">
+                <FileX size={48} className="empty-state-icon" />
+                <h3 className="empty-state-title">No data found</h3>
+                <p className="empty-state-description">There are no items to display. Try adjusting your filters or adding new data.</p>
+                <button className="btn btn-primary">Add New Item</button>
+              </div>
+            </ComponentTooltip>
           </div>
         </div>
       </section>
@@ -845,17 +1082,134 @@ const Components: React.FC = () => {
           </div>
         </ComponentTooltip>
 
-        <ComponentTooltip component="Toast" description="토스트 알림입니다.">
-          <div className="toast-container">
-            <div className="toast">
-              <Check size={20} className="toast-icon" />
-              <span>Changes saved successfully!</span>
-              <button className="toast-close">
-                <X size={16} />
-              </button>
-            </div>
+        {/* Toast/Snackbar Section - 별도 섹션으로 분리 */}
+        <div style={{ marginTop: '2rem' }} data-component="toast">
+          <h3 style={{ marginBottom: '1rem', fontSize: '1.125rem', fontWeight: '600' }}>Toast / Snackbar</h3>
+          <div className="toast-examples">
+            {/* Success Toast */}
+            <ComponentTooltip component="Success Toast" description="작업이 성공적으로 완료되었을 때 표시하는 토스트입니다.">
+              <div className="toast-container" data-component="success-toast">
+                <div className="toast toast-success">
+                  <Check size={20} className="toast-icon" />
+                  <div className="toast-content">
+                    <strong className="toast-title">Success!</strong>
+                    <span className="toast-message">Your changes have been saved.</span>
+                  </div>
+                  <button className="toast-close">
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+            </ComponentTooltip>
+
+            {/* Error Toast */}
+            <ComponentTooltip component="Error Toast" description="오류가 발생했을 때 표시하는 토스트입니다.">
+              <div className="toast-container">
+                <div className="toast toast-error">
+                  <XCircle size={20} className="toast-icon" />
+                  <div className="toast-content">
+                    <strong className="toast-title">Error</strong>
+                    <span className="toast-message">Something went wrong. Please try again.</span>
+                  </div>
+                  <button className="toast-close">
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+            </ComponentTooltip>
+
+            {/* Warning Toast */}
+            <ComponentTooltip component="Warning Toast" description="주의가 필요한 상황을 알리는 토스트입니다.">
+              <div className="toast-container">
+                <div className="toast toast-warning">
+                  <AlertCircle size={20} className="toast-icon" />
+                  <div className="toast-content">
+                    <strong className="toast-title">Warning</strong>
+                    <span className="toast-message">Your session will expire in 5 minutes.</span>
+                  </div>
+                  <button className="toast-close">
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+            </ComponentTooltip>
+
+            {/* Info Toast */}
+            <ComponentTooltip component="Info Toast" description="일반적인 정보를 전달하는 토스트입니다.">
+              <div className="toast-container">
+                <div className="toast toast-info">
+                  <Info size={20} className="toast-icon" />
+                  <div className="toast-content">
+                    <strong className="toast-title">New Update</strong>
+                    <span className="toast-message">A new version is available.</span>
+                  </div>
+                  <button className="toast-close">
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+            </ComponentTooltip>
+
+            {/* Toast with Action */}
+            <ComponentTooltip component="Action Toast" description="사용자가 즉시 행동을 취할 수 있는 액션 버튼이 있는 토스트입니다.">
+              <div className="toast-container">
+                <div className="toast toast-action">
+                  <Bell size={20} className="toast-icon" />
+                  <div className="toast-content">
+                    <span className="toast-message">You have a new message</span>
+                  </div>
+                  <button className="btn btn-sm btn-primary">View</button>
+                  <button className="toast-close">
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+            </ComponentTooltip>
+
+            {/* Minimal Toast (Snackbar style) */}
+            <ComponentTooltip component="Minimal Snackbar" description="최소한의 정보만 표시하는 간단한 스낵바 스타일입니다.">
+              <div className="toast-container">
+                <div className="toast toast-minimal">
+                  <span>Item deleted</span>
+                  <button className="btn btn-ghost btn-sm">Undo</button>
+                </div>
+              </div>
+            </ComponentTooltip>
+
+            {/* Toast with Progress */}
+            <ComponentTooltip component="Progress Toast" description="진행 상황을 표시하는 프로그레스 바가 있는 토스트입니다.">
+              <div className="toast-container">
+                <div className="toast toast-progress">
+                  <div className="toast-header">
+                    <Download size={20} className="toast-icon" />
+                    <span className="toast-message">Downloading file...</span>
+                    <button className="toast-close">
+                      <X size={16} />
+                    </button>
+                  </div>
+                  <div className="toast-progress-bar">
+                    <div className="toast-progress-fill" style={{ width: '60%' }}></div>
+                  </div>
+                </div>
+              </div>
+            </ComponentTooltip>
+
+            {/* Positioned Toasts Demo */}
+            <ComponentTooltip component="Toast Positions" description="화면의 다양한 위치에 토스트를 표시할 수 있습니다.">
+              <div className="toast-position-demo">
+                <p className="demo-label">Toast Positions:</p>
+                <div className="toast-positions">
+                  <div className="position-box top-left">Top Left</div>
+                  <div className="position-box top-center">Top Center</div>
+                  <div className="position-box top-right">Top Right</div>
+                  <div className="position-box bottom-left">Bottom Left</div>
+                  <div className="position-box bottom-center">Bottom Center</div>
+                  <div className="position-box bottom-right">Bottom Right</div>
+                </div>
+              </div>
+            </ComponentTooltip>
           </div>
-        </ComponentTooltip>
+        </div>
 
         <div className="component-grid">
           <ComponentTooltip component="Modal" description="모달 대화상자 컴포넌트입니다.">
@@ -916,6 +1270,170 @@ const Components: React.FC = () => {
                   This is a helpful tooltip
                 </div>
               )}
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Dialog" description="대화상자 컴포넌트입니다.">
+            <div>
+              <button className="btn btn-primary" onClick={() => setShowDialog(true)}>Open Dialog</button>
+              {showDialog && (
+                <div className="modal-overlay" onClick={() => setShowDialog(false)}>
+                  <div className="dialog" data-component="dialog" onClick={(e) => e.stopPropagation()}>
+                    <div className="dialog-header">
+                      <h3>Confirm Action</h3>
+                    </div>
+                    <div className="dialog-body">
+                      <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+                    </div>
+                    <div className="dialog-footer">
+                      <button className="btn btn-ghost" onClick={() => setShowDialog(false)}>Cancel</button>
+                      <button className="btn btn-error" onClick={() => setShowDialog(false)}>Delete</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Notification" description="알림 컴포넌트입니다.">
+            <div>
+              <button className="btn btn-primary" onClick={() => setShowNotification(true)}>Show Notification</button>
+              {showNotification && (
+                <div className="notification" data-component="notification">
+                  <Bell size={20} className="notification-icon" />
+                  <div className="notification-content">
+                    <h4 className="notification-title">New message received</h4>
+                    <p className="notification-description">You have a new message from John Doe</p>
+                  </div>
+                  <button className="notification-close" onClick={() => setShowNotification(false)}>
+                    <X size={16} />
+                  </button>
+                </div>
+              )}
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Popover" description="팝오버 컴포넌트입니다.">
+            <div className="popover-container">
+              <button 
+                className="btn btn-outline"
+                onClick={() => setShowPopover(!showPopover)}
+              >
+                Click for popover
+              </button>
+              {showPopover && (
+                <div className="popover" data-component="popover">
+                  <div className="popover-arrow"></div>
+                  <div className="popover-header">
+                    <h4>Popover Title</h4>
+                  </div>
+                  <div className="popover-body">
+                    <p>This is a popover with more detailed content than a tooltip.</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </ComponentTooltip>
+
+        </div>
+      </section>
+
+      {/* States Section */}
+      <section className="component-section">
+        <h2 className="section-title">States</h2>
+        
+        <div className="component-grid">
+          <ComponentTooltip component="Default" description="기본 상태 예시입니다.">
+            <div className="states-demo" data-component="default">
+              <button className="btn btn-primary">Default Button</button>
+              <input type="text" className="form-input" placeholder="Default Input" />
+              <div className="state-label">Default State</div>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Hover" description="호버 상태 예시입니다.">
+            <div className="states-demo" data-component="hover">
+              <button className="btn btn-primary state-hover">Hover Button</button>
+              <input type="text" className="form-input state-hover" placeholder="Hover Input" />
+              <div className="state-label">Hover State</div>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Focus" description="포커스 상태 예시입니다.">
+            <div className="states-demo" data-component="focus">
+              <button className="btn btn-primary state-focus">Focus Button</button>
+              <input type="text" className="form-input state-focus" placeholder="Focus Input" />
+              <div className="state-label">Focus State</div>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Active" description="활성 상태 예시입니다.">
+            <div className="states-demo" data-component="active">
+              <button className="btn btn-primary state-active">Active Button</button>
+              <input type="text" className="form-input state-active" placeholder="Active Input" />
+              <div className="state-label">Active State</div>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Disabled" description="비활성화 상태 예시입니다.">
+            <div className="states-demo" data-component="disabled">
+              <button className="btn btn-primary" disabled>Disabled Button</button>
+              <input type="text" className="form-input" disabled placeholder="Disabled Input" />
+              <div className="state-label">Disabled State</div>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Loading" description="로딩 상태 예시입니다.">
+            <div className="states-demo" data-component="loading">
+              <button className="btn btn-primary">
+                <span className="spinner"></span>
+                <span>Loading...</span>
+              </button>
+              <div className="skeleton skeleton-text"></div>
+              <div className="state-label">Loading State</div>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Selected" description="선택된 상태 예시입니다.">
+            <div className="states-demo" data-component="selected">
+              <button className="btn btn-primary state-selected">Selected Button</button>
+              <div className="card state-selected">
+                <p>Selected Card</p>
+              </div>
+              <div className="state-label">Selected State</div>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Error" description="에러 상태 예시입니다.">
+            <div className="states-demo" data-component="error">
+              <button className="btn btn-error">Error Button</button>
+              <input type="text" className="form-input state-error" value="Error Input" readOnly />
+              <div className="alert alert-error">
+                <XCircle size={20} />
+                <span>Error State</span>
+              </div>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Success" description="성공 상태 예시입니다.">
+            <div className="states-demo" data-component="success">
+              <button className="btn btn-success">Success Button</button>
+              <input type="text" className="form-input state-success" value="Success Input" readOnly />
+              <div className="alert alert-success">
+                <Check size={20} />
+                <span>Success State</span>
+              </div>
+            </div>
+          </ComponentTooltip>
+
+          <ComponentTooltip component="Warning" description="경고 상태 예시입니다.">
+            <div className="states-demo" data-component="warning">
+              <button className="btn btn-warning">Warning Button</button>
+              <input type="text" className="form-input state-warning" value="Warning Input" readOnly />
+              <div className="alert alert-warning">
+                <AlertCircle size={20} />
+                <span>Warning State</span>
+              </div>
             </div>
           </ComponentTooltip>
         </div>

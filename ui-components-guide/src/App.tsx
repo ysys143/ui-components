@@ -9,6 +9,10 @@ import Foundation from './pages/Foundation';
 import Components from './pages/Components';
 import Patterns from './pages/Patterns';
 import StatesAccessibility from './pages/StatesAccessibility';
+import LoginPage from './pages/patterns/LoginPage';
+import DashboardPage from './pages/patterns/DashboardPage';
+import DetailPage from './pages/patterns/DetailPage';
+import FormSettingsExample from './pages/patterns/FormSettingsExample';
 import { LearningModeProvider } from './contexts/LearningModeContext';
 import './App.css';
 
@@ -27,6 +31,10 @@ function App() {
             <Route path="components" element={<Components />} />
             <Route path="patterns" element={<Patterns />} />
             <Route path="states-accessibility" element={<StatesAccessibility />} />
+            <Route path="patterns/login" element={<LoginPage />} />
+            <Route path="patterns/dashboard" element={<DashboardPage />} />
+            <Route path="patterns/detail" element={<DetailPage />} />
+            <Route path="forms/example" element={<FormSettingsExample />} />
           </Route>
         </Routes>
       </Router>

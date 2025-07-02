@@ -95,15 +95,10 @@ const Foundation: React.FC = () => {
 
   return (
     <div className="foundation-page">
-      <ComponentTooltip
-        component="Page Header"
-        description="Foundation 페이지의 헤더입니다."
-      >
-        <div className="page-header">
-          <h1 className="page-title">Foundation</h1>
-          <p className="page-description">디자인 시스템의 기초 요소들을 확인하세요</p>
-        </div>
-      </ComponentTooltip>
+      <div className="page-header">
+        <h1 className="page-title">Foundation</h1>
+        <p className="page-description">디자인 시스템의 기초 요소들을 확인하세요</p>
+      </div>
 
       {/* Color Section */}
       <section className="foundation-section">

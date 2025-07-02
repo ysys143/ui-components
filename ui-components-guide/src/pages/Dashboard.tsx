@@ -57,15 +57,10 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="dashboard">
-      <ComponentTooltip
-        component="Page Header"
-        description="페이지 제목과 설명을 표시하는 헤더 영역입니다."
-      >
-        <div className="page-header">
-          <h1 className="page-title">대시보드</h1>
-          <p className="page-description">비즈니스 성과를 한눈에 확인하세요</p>
-        </div>
-      </ComponentTooltip>
+      <div className="page-header">
+        <h1 className="page-title">대시보드</h1>
+        <p className="page-description">비즈니스 성과를 한눈에 확인하세요</p>
+      </div>
 
       <ComponentTooltip
         component="Metrics Grid"

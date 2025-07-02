@@ -20,15 +20,16 @@ const Settings: React.FC = () => {
 
   return (
     <div className="settings">
+      <div className="page-header">
+        <h1 className="page-title">설정</h1>
+        <p className="page-description">계정 설정과 환경 설정을 관리하세요</p>
+      </div>
+
       <ComponentTooltip
-        component="Settings Header"
-        description="설정 페이지의 제목과 저장 버튼을 포함한 헤더입니다."
+        component="Settings Header with Save"
+        description="설정 페이지의 저장 버튼을 포함한 헤더입니다."
       >
         <div className="settings-header">
-          <div>
-            <h1 className="page-title">설정</h1>
-            <p className="page-description">계정 설정과 환경 설정을 관리하세요</p>
-          </div>
           <ComponentTooltip
             component="Save Button"
             description="변경사항을 저장하는 버튼입니다."

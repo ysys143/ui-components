@@ -17,15 +17,10 @@ const Patterns: React.FC = () => {
 
   return (
     <div className="patterns-page">
-      <ComponentTooltip
-        component="Page Header"
-        description="Patterns 페이지의 헤더입니다."
-      >
-        <div className="page-header">
-          <h1 className="page-title">Component Patterns</h1>
-          <p className="page-description">일반적인 UI 패턴과 컴포넌트 조합</p>
-        </div>
-      </ComponentTooltip>
+      <div className="page-header">
+        <h1 className="page-title">Design Patterns</h1>
+        <p className="page-description">실제 애플리케이션에서 사용하는 복합적인 UI 패턴과 레이아웃</p>
+      </div>
 
       {/* Login Page Pattern */}
       <section className="pattern-section">
@@ -100,7 +95,7 @@ const Patterns: React.FC = () => {
       {/* Dashboard Layout Pattern */}
       <section className="pattern-section">
         <h2 className="section-title">Dashboard Layout</h2>
-        <ComponentTooltip component="Dashboard Layout" description="대시보드 레이아웃 패턴입니다.">
+        <ComponentTooltip component="dashboard-layout" description="대시보드 레이아웃 패턴입니다.">
           <div className="dashboard-demo">
             <div className="dashboard-header">
               <div className="dashboard-title-section">
@@ -148,7 +143,7 @@ const Patterns: React.FC = () => {
       <section className="pattern-section">
         <h2 className="section-title">Form Wizard</h2>
         <ComponentTooltip component="Form Wizard" description="다단계 폼 위자드 패턴입니다.">
-          <div className="wizard-container">
+          <div className="wizard-container" data-component="form-wizard">
             <div className="wizard-steps">
               {wizardSteps.map((step, index) => (
                 <div key={step} className={`wizard-step ${index === currentStep ? 'active' : ''} ${index < currentStep ? 'completed' : ''}`}>
@@ -267,8 +262,8 @@ const Patterns: React.FC = () => {
       {/* Master-Detail Pattern */}
       <section className="pattern-section">
         <h2 className="section-title">Master-Detail Layout</h2>
-        <ComponentTooltip component="Master-Detail" description="목록과 상세 정보를 함께 표시하는 패턴입니다.">
-          <div className="master-detail-container">
+        <ComponentTooltip component="master-detail" description="목록과 상세 정보를 함께 표시하는 패턴입니다.">
+          <div className="master-detail-container" data-component="master-detail">
             <div className="master-list">
               <div className="list-header">
                 <h4>Messages</h4>
@@ -331,7 +326,7 @@ const Patterns: React.FC = () => {
       <section className="pattern-section">
         <h2 className="section-title">Search Results</h2>
         <ComponentTooltip component="Search Results" description="검색 결과 표시 패턴입니다.">
-          <div className="search-results-container">
+          <div className="search-results-container" data-component="search-results">
             <div className="search-header">
               <div className="search-input-container">
                 <Search size={20} className="search-icon" />
@@ -399,7 +394,7 @@ const Patterns: React.FC = () => {
       <section className="pattern-section">
         <h2 className="section-title">Card Grid</h2>
         <ComponentTooltip component="Card Grid" description="카드 그리드 레이아웃 패턴입니다.">
-          <div className="card-grid-container">
+          <div className="card-grid-container" data-component="card-grid">
             <div className="grid-header">
               <h4>Products</h4>
               <div className="grid-controls">
@@ -438,7 +433,7 @@ const Patterns: React.FC = () => {
       <section className="pattern-section">
         <h2 className="section-title">Settings Page</h2>
         <ComponentTooltip component="Settings Layout" description="설정 페이지 레이아웃 패턴입니다.">
-          <div className="settings-container">
+          <div className="settings-container" data-component="settings-layout">
             <div className="settings-sidebar">
               <nav className="settings-nav">
                 <a href="#" className="settings-nav-item active">
@@ -508,9 +503,9 @@ const Patterns: React.FC = () => {
 
       {/* Empty States Pattern */}
       <section className="pattern-section">
-        <h2 className="section-title">Empty States</h2>
-        <ComponentTooltip component="Empty States" description="데이터가 없을 때 표시하는 빈 상태 패턴입니다.">
-          <div className="empty-states-grid">
+        <h2 className="section-title">Empty State Patterns</h2>
+        <ComponentTooltip component="Empty State Patterns" description="다양한 상황별 빈 상태 화면들의 디자인 패턴 모음입니다.">
+          <div className="empty-states-grid" data-component="empty-states">
             <div className="empty-state-card">
               <div className="empty-state">
                 <Search size={48} className="empty-icon" />
