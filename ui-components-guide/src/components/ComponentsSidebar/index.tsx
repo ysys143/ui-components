@@ -16,9 +16,20 @@ interface ComponentsSidebarProps {
   currentPage: string;
   onNavigateToPage?: (page: string) => void;
   showToast?: (message: string) => void;
+  searchQuery?: string;
+  highlightedComponent?: string | null;
+  onHighlightComponent?: (componentId: string | null) => void;
 }
 
-const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick, currentPage, onNavigateToPage, showToast }) => {
+const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ 
+  onComponentClick, 
+  currentPage, 
+  onNavigateToPage, 
+  showToast,
+  searchQuery = '',
+  highlightedComponent,
+  onHighlightComponent
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
@@ -31,6 +42,7 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
   const [hoverPosition, setHoverPosition] = useState({ x: 0, y: 0 });
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const [filteredItems, setFilteredItems] = useState<ComponentItem[]>([]);
   
   // 현재 경로를 정확히 파악 (예: /patterns/detail)
   const currentPath = location.pathname.slice(1) || 'dashboard';
@@ -509,6 +521,50 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
     };
   }, [currentPage]);
 
+  // 검색 기능
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      const filtered: ComponentItem[] = [];
+      const expandCategories: string[] = [];
+      
+      componentsData.forEach(category => {
+        const matchingItems = category.items.filter(item => 
+          item.name.toLowerCase().includes(query) || 
+          item.id.toLowerCase().includes(query) ||
+          item.description.toLowerCase().includes(query)
+        );
+        
+        if (matchingItems.length > 0) {
+          filtered.push(...matchingItems);
+          expandCategories.push(category.id);
+        }
+      });
+      
+      setFilteredItems(filtered);
+      setExpandedCategories(expandCategories);
+      
+      // 첫 번째 검색 결과를 선택하고 하이라이트
+      if (filtered.length > 0) {
+        const firstItem = filtered[0];
+        setSelectedComponent(firstItem.id);
+        if (onHighlightComponent) {
+          onHighlightComponent(firstItem.id);
+        }
+        
+        // 해당 컴포넌트로 스크롤
+        setTimeout(() => {
+          handleComponentClick(firstItem.id);
+        }, 100);
+      }
+    } else {
+      setFilteredItems([]);
+      if (onHighlightComponent) {
+        onHighlightComponent(null);
+      }
+    }
+  }, [searchQuery]);
+
   const toggleCategory = (categoryId: string) => {
     setExpandedCategories(prev =>
       prev.includes(categoryId)
@@ -603,49 +659,82 @@ const ComponentsSidebar: React.FC<ComponentsSidebarProps> = ({ onComponentClick,
     <aside className="components-sidebar" ref={sidebarRef}>
       <div className="components-sidebar-header">
         <h3>UI 컴포넌트 전체 목록</h3>
-        <p className="components-sidebar-subtitle">클릭하여 해당 컴포넌트로 이동</p>
+        <p className="components-sidebar-subtitle">
+          {searchQuery ? `"${searchQuery}" 검색 결과 (${filteredItems.length}개)` : '클릭하여 해당 컴포넌트로 이동'}
+        </p>
       </div>
       
       <div className="components-list">
-        {componentsData.map((category) => (
-          <div key={category.id} className="component-category">
-            <button
-              className="category-header"
-              onClick={() => toggleCategory(category.id)}
-            >
-              {expandedCategories.includes(category.id) ? (
-                <ChevronDown size={16} />
-              ) : (
-                <ChevronRight size={16} />
+        {searchQuery ? (
+          // 검색 결과 표시
+          filteredItems.length > 0 ? (
+            <div className="search-results">
+              {filteredItems.map((item) => {
+                const isActive = isComponentActive(item.id);
+                const isSelected = selectedComponent === item.id;
+                const isHighlighted = highlightedComponent === item.id;
+                
+                return (
+                  <button
+                    key={item.id}
+                    className={`component-item ${isSelected ? 'selected' : ''} ${isActive ? 'in-page' : 'inactive'} ${isHighlighted ? 'highlighted' : ''}`}
+                    onClick={() => handleComponentClick(item.id)}
+                    onMouseEnter={(e) => handleMouseEnter({ id: item.id, name: item.name, category: '' }, e)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <span className="component-name">{item.name}</span>
+                    {isActive && <span className="in-page-indicator">●</span>}
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="no-results">
+              <p>검색 결과가 없습니다.</p>
+            </div>
+          )
+        ) : (
+          // 기본 카테고리 표시
+          componentsData.map((category) => (
+            <div key={category.id} className="component-category">
+              <button
+                className="category-header"
+                onClick={() => toggleCategory(category.id)}
+              >
+                {expandedCategories.includes(category.id) ? (
+                  <ChevronDown size={16} />
+                ) : (
+                  <ChevronRight size={16} />
+                )}
+                <span className="category-title">{category.title}</span>
+                <span className="category-count">{category.items.length}</span>
+              </button>
+              
+              {expandedCategories.includes(category.id) && (
+                <div className="category-items">
+                  {category.items.map((item) => {
+                    const isActive = isComponentActive(item.id);
+                    // 선택된 컴포넌트인지 확인
+                    const isSelected = selectedComponent === item.id;
+                    
+                    return (
+                      <button
+                        key={item.id}
+                        className={`component-item ${isSelected ? 'selected' : ''} ${isActive ? 'in-page' : 'inactive'}`}
+                        onClick={() => handleComponentClick(item.id)}
+                        onMouseEnter={(e) => handleMouseEnter({ id: item.id, name: item.name, category: category.id }, e)}
+                        onMouseLeave={handleMouseLeave}
+                      >
+                        <span className="component-name">{item.name}</span>
+                        {isActive && <span className="in-page-indicator">●</span>}
+                      </button>
+                    );
+                  })}
+                </div>
               )}
-              <span className="category-title">{category.title}</span>
-              <span className="category-count">{category.items.length}</span>
-            </button>
-            
-            {expandedCategories.includes(category.id) && (
-              <div className="category-items">
-                {category.items.map((item) => {
-                  const isActive = isComponentActive(item.id);
-                  // 선택된 컴포넌트인지 확인
-                  const isSelected = selectedComponent === item.id;
-                  
-                  return (
-                    <button
-                      key={item.id}
-                      className={`component-item ${isSelected ? 'selected' : ''} ${isActive ? 'in-page' : 'inactive'}`}
-                      onClick={() => handleComponentClick(item.id)}
-                      onMouseEnter={(e) => handleMouseEnter({ id: item.id, name: item.name, category: category.id }, e)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <span className="component-name">{item.name}</span>
-                      {isActive && <span className="in-page-indicator">●</span>}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        ))}
+            </div>
+          ))
+        )}
       </div>
       
       <div className="sidebar-footer">

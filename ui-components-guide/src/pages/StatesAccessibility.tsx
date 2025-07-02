@@ -5,6 +5,7 @@ import {
   Sun, Moon, ZoomIn, ZoomOut, Type, Palette, Move
 } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
+import StandardPageHeader from '../components/StandardPageHeader';
 import './StatesAccessibility.css';
 
 const StatesAccessibility: React.FC = () => {
@@ -15,10 +16,15 @@ const StatesAccessibility: React.FC = () => {
 
   return (
     <div className="states-page">
-      <div className="page-header">
-        <h1 className="page-title">States & Accessibility</h1>
-        <p className="page-description">UI 상태와 접근성 가이드라인</p>
-      </div>
+      <ComponentTooltip
+        component="Standardized Page Header"
+        description="표준화된 페이지 헤더로 일관된 레이아웃을 제공합니다."
+      >
+        <StandardPageHeader
+          title="States & Accessibility"
+          description="UI 상태와 접근성 가이드라인"
+        />
+      </ComponentTooltip>
 
       {/* Interactive States Section */}
       <section className="states-section">
@@ -459,7 +465,6 @@ const StatesAccessibility: React.FC = () => {
             <div className="theme-preview" style={{ fontSize: `${fontSize}px` }}>
               <h3>Preview Content</h3>
               <p>This is how your content will look with the selected theme options.</p>
-              <button className="btn btn-primary">Sample Button</button>
               <input type="text" className="form-input" placeholder="Sample input" />
             </div>
           </div>
@@ -750,7 +755,7 @@ const StatesAccessibility: React.FC = () => {
                     </header>
                     
                     {/* Main Content */}
-                    <main id="demo-main-content" className="demo-main" tabIndex="-1">
+                    <main id="demo-main-content" className="demo-main" tabIndex={-1}>
                       <h5>Main Content Area</h5>
                       <p>Skip link를 사용하면 헤더와 네비게이션을 건너뛰고 여기로 바로 이동합니다.</p>
                       <p>키보드 사용자는 매 페이지마다 반복되는 네비게이션을 Tab으로 하나씩 거치지 않아도 됩니다.</p>

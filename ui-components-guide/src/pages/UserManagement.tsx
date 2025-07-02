@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Filter, MoreVertical, Edit, Trash2, UserPlus } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
+import StandardPageHeader from '../components/StandardPageHeader';
 import './UserManagement.css';
 
 interface User {
@@ -43,24 +44,24 @@ const UserManagement: React.FC = () => {
   return (
     <div className="user-management">
       <ComponentTooltip
-        component="Page Header with Actions"
-        description="페이지 제목과 액션 버튼을 포함한 헤더입니다."
+        component="Standardized Page Header"
+        description="표준화된 페이지 헤더로 일관된 레이아웃을 제공합니다."
       >
-        <div className="page-header-with-actions">
-          <div>
-            <h1 className="page-title">사용자 관리</h1>
-            <p className="page-description">시스템 사용자를 관리하고 권한을 설정하세요</p>
-          </div>
-          <ComponentTooltip
-            component="Primary Button"
-            description="주요 액션을 위한 기본 버튼입니다."
-          >
-            <button className="btn-primary">
-              <UserPlus size={20} />
-              <span>사용자 추가</span>
-            </button>
-          </ComponentTooltip>
-        </div>
+        <StandardPageHeader
+          title="사용자 관리"
+          description="시스템 사용자를 관리하고 권한을 설정하세요"
+          actions={
+            <ComponentTooltip
+              component="Primary Button"
+              description="주요 액션을 위한 기본 버튼입니다."
+            >
+              <button className="btn-primary">
+                <UserPlus size={20} />
+                <span>사용자 추가</span>
+              </button>
+            </ComponentTooltip>
+          }
+        />
       </ComponentTooltip>
 
       <ComponentTooltip

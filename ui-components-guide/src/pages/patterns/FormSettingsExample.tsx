@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { User, Mail, Lock, Bell, Globe, Shield, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, Lock, Bell, Globe, Shield, Eye, EyeOff, Save } from 'lucide-react';
 import ComponentTooltip from '../../components/ui/ComponentTooltip';
+import StandardPageHeader from '../../components/StandardPageHeader';
 import './FormSettingsExample.css';
 
 const FormSettingsExample: React.FC = () => {
@@ -30,10 +31,26 @@ const FormSettingsExample: React.FC = () => {
 
   return (
     <div className="form-settings-example">
-      <div className="page-header">
-        <h1>Form Components 예제 - 설정 페이지</h1>
-        <p>Form, Form Label, Helper Text의 실제 사용 예제를 확인할 수 있습니다.</p>
-      </div>
+      <ComponentTooltip
+        component="Standardized Page Header"
+        description="표준화된 페이지 헤더로 일관된 레이아웃을 제공합니다."
+      >
+        <StandardPageHeader
+          title="설정"
+          description="Form, Form Label, Helper Text의 실제 사용 예제를 확인할 수 있습니다."
+          actions={
+            <ComponentTooltip
+              component="Save Button"
+              description="변경사항을 저장하는 버튼입니다."
+            >
+              <button className="btn-primary" onClick={handleSubmit}>
+                <Save size={20} />
+                <span>변경사항 저장</span>
+              </button>
+            </ComponentTooltip>
+          }
+        />
+      </ComponentTooltip>
 
       <div className="settings-container">
         {/* Tab Navigation */}
@@ -134,10 +151,6 @@ const FormSettingsExample: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="form-actions">
-                  <button type="button" className="btn-outline">취소</button>
-                  <button type="submit" className="btn-primary">저장하기</button>
-                </div>
               </form>
             </ComponentTooltip>
           )}
@@ -201,10 +214,6 @@ const FormSettingsExample: React.FC = () => {
                 </div>
               </div>
 
-              <div className="form-actions">
-                <button type="button" className="btn-outline">취소</button>
-                <button type="submit" className="btn-primary">저장하기</button>
-              </div>
             </form>
           )}
 
@@ -289,10 +298,6 @@ const FormSettingsExample: React.FC = () => {
                 </div>
               </div>
 
-              <div className="form-actions">
-                <button type="button" className="btn-outline">취소</button>
-                <button type="submit" className="btn-primary">저장하기</button>
-              </div>
             </form>
           )}
         </div>

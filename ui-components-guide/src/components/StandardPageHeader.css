@@ -1,0 +1,216 @@
+.standard-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 1.5rem 0 0.5rem 0;
+  padding: 0 0 1rem 0;
+  border-bottom: 1px solid #e5e7eb;
+  background: transparent;
+}
+
+.page-info {
+  flex: 1;
+  max-width: 600px;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.page-description {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.page-header-right {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-left: 2rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem; /* 제목과 시각적으로 정렬 */
+}
+
+.page-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Controls and Actions 내부 버튼 스타일링 */
+.page-controls .btn-secondary,
+.page-controls .date-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.page-controls .btn-secondary:hover,
+.page-controls .date-picker:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-controls .btn-secondary:focus,
+.page-controls .date-picker:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-color: #3b82f6;
+}
+
+.page-actions .btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
+}
+
+.page-actions .btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.page-actions .btn-primary:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.page-actions .btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
+}
+
+/* 향상된 텍스트 대비와 가독성 */
+.page-title::selection {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.page-description::selection {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+/* 반응형 레이아웃 */
+@media (max-width: 768px) {
+  .standard-page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    padding-bottom: 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.75rem;
+  }
+
+  .page-header-right {
+    margin-left: 0;
+    margin-top: 0;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .page-controls,
+  .page-actions {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .standard-page-header {
+    margin: 1rem 0;
+    padding-bottom: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .page-description {
+    font-size: 0.875rem;
+  }
+
+  .page-header-right {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .page-controls,
+  .page-actions {
+    justify-content: stretch;
+  }
+
+  .page-controls > *,
+  .page-actions > * {
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+  }
+}
+
+/* 다크 모드 대응 (선택적) */
+@media (prefers-color-scheme: dark) {
+  .standard-page-header {
+    border-bottom-color: #374151;
+  }
+
+  .page-title {
+    color: #f9fafb;
+  }
+
+  .page-description {
+    color: #9ca3af;
+  }
+
+  .page-controls .btn-secondary,
+  .page-controls .date-picker {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+
+  .page-controls .btn-secondary:hover,
+  .page-controls .date-picker:hover {
+    background: #4b5563;
+    border-color: #6b7280;
+  }
+} 

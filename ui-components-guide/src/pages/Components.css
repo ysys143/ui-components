@@ -24,7 +24,7 @@
 }
 
 .component-section {
-  margin-bottom: 3rem;
+  margin: 1.5rem 0 3rem 0;
   background: #ffffff;
   border-radius: 12px;
   padding: 2rem;
@@ -51,6 +51,147 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+/* Form Container and Layout */
+.form-container {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 500px;
+}
+
+.form-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Form Label Variations */
+.form-label-examples {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-label-description {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.form-label.required::after {
+  content: " *";
+  color: #ef4444;
+}
+
+.form-label.optional::after {
+  content: " (optional)";
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+/* Helper Text Variations */
+.helper-text-examples {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-helper-text {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.form-helper-text.info {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #3b82f6;
+}
+
+.form-helper-text.muted {
+  color: #9ca3af;
+}
+
+.form-error-message {
+  font-size: 0.75rem;
+  color: #ef4444;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Field Group */
+.field-group {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.field-group-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+}
+
+.field-group-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Form States */
+.form-input.state-error {
+  border-color: #ef4444;
+}
+
+.form-input.state-error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Form Validation Example */
+.form-validation-example {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 400px;
+}
+
+.form-validation-example .form-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
 /* Data Display Sub-sections */
@@ -704,7 +845,8 @@
 }
 
 /* Tags */
-.tag-group {
+.tag-group,
+.tags-container {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
@@ -716,24 +858,67 @@
   gap: 0.5rem;
   padding: 0.375rem 0.75rem;
   background-color: #f3f4f6;
-  border-radius: 6px;
+  border-radius: 16px;
   font-size: 0.875rem;
   color: #374151;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.tag-primary {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.tag-success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.tag-warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.tag-error {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.tag-removable {
+  padding-right: 0.5rem;
+}
+
+.tag-interactive {
+  cursor: pointer;
+  border: 1px dashed #d1d5db;
+  background-color: transparent;
+}
+
+.tag-interactive:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
 }
 
 .tag-remove {
   background: none;
   border: none;
   padding: 0;
+  margin-left: 0.25rem;
   color: #6b7280;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  transition: all 0.2s;
 }
 
 .tag-remove:hover {
   color: #374151;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Progress */

@@ -12,6 +12,8 @@ const Layout: React.FC = () => {
   const pathSegments = location.pathname.split('/').filter(Boolean);
   const currentPage = pathSegments[0] || 'dashboard';
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [highlightedComponent, setHighlightedComponent] = useState<string | null>(null);
   
   const handleNavigateToPage = (page: string) => {
     navigate(`/${page}`);
@@ -51,15 +53,28 @@ const Layout: React.FC = () => {
   }, [toastMessage]);
 
 
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    if (query.trim()) {
+      // Components 페이지로 자동 이동
+      if (currentPage !== 'components') {
+        navigate('/components');
+      }
+    }
+  };
+
   return (
     <div className="layout">
-      <Navbar />
+      <Navbar onSearch={handleSearch} searchQuery={searchQuery} />
       <div className="layout-body">
         <ComponentsSidebar 
           onComponentClick={handleComponentClick}
           currentPage={currentPage}
           onNavigateToPage={handleNavigateToPage}
           showToast={showToast}
+          searchQuery={searchQuery}
+          highlightedComponent={highlightedComponent}
+          onHighlightComponent={setHighlightedComponent}
         />
         <Sidebar />
         <main className="layout-main">

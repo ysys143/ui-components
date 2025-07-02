@@ -152,3 +152,28 @@
   color: #374151;
   margin: 0;
 }
+
+/* Search Results */
+.search-results {
+  padding: 0.5rem 0;
+}
+
+.search-results .component-item {
+  margin-bottom: 0.25rem;
+}
+
+.no-results {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.component-item.highlighted {
+  background-color: #fef3c7;
+  border-color: #f59e0b;
+}
+
+.component-item.highlighted:hover {
+  background-color: #fed7aa;
+}

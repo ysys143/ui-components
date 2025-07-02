@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUp, ArrowDown, Users, ShoppingCart, DollarSign, TrendingUp } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
+import StandardPageHeader from '../components/StandardPageHeader';
 import { LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import './Dashboard.css';
 
@@ -57,10 +58,15 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="dashboard">
-      <div className="page-header">
-        <h1 className="page-title">대시보드</h1>
-        <p className="page-description">비즈니스 성과를 한눈에 확인하세요</p>
-      </div>
+      <ComponentTooltip
+        component="Standardized Page Header"
+        description="표준화된 페이지 헤더로 일관된 레이아웃을 제공합니다."
+      >
+        <StandardPageHeader
+          title="대시보드"
+          description="비즈니스 성과를 한눈에 확인하세요"
+        />
+      </ComponentTooltip>
 
       <ComponentTooltip
         component="Metrics Grid"

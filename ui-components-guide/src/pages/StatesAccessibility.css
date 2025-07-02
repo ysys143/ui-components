@@ -32,18 +32,29 @@
 }
 
 .states-section {
-  margin-bottom: 3rem;
+  margin: 1.5rem 0 3rem 0;
   background: #ffffff;
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.states-section .component-tooltip-container:not(:last-child) {
+  margin-bottom: 3rem;
+}
+
 /* States Grid */
 .states-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem 1.5rem;
+  justify-content: flex-start;
+}
+
+.states-grid .state-item {
+  flex: 1 1 180px;
+  min-width: 180px;
+  max-width: 250px;
 }
 
 .state-item {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Save, User, Bell, Shield, Palette } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
+import StandardPageHeader from '../components/StandardPageHeader';
 import './Settings.css';
 
 const Settings: React.FC = () => {
@@ -20,26 +21,25 @@ const Settings: React.FC = () => {
 
   return (
     <div className="settings">
-      <div className="page-header">
-        <h1 className="page-title">설정</h1>
-        <p className="page-description">계정 설정과 환경 설정을 관리하세요</p>
-      </div>
-
       <ComponentTooltip
-        component="Settings Header with Save"
-        description="설정 페이지의 저장 버튼을 포함한 헤더입니다."
+        component="Standardized Page Header"
+        description="표준화된 페이지 헤더로 일관된 레이아웃을 제공합니다."
       >
-        <div className="settings-header">
-          <ComponentTooltip
-            component="Save Button"
-            description="변경사항을 저장하는 버튼입니다."
-          >
-            <button className="btn-primary">
-              <Save size={20} />
-              <span>변경사항 저장</span>
-            </button>
-          </ComponentTooltip>
-        </div>
+        <StandardPageHeader
+          title="설정"
+          description="계정 설정과 환경 설정을 관리하세요"
+          actions={
+            <ComponentTooltip
+              component="Save Button"
+              description="변경사항을 저장하는 버튼입니다."
+            >
+              <button className="btn-primary">
+                <Save size={20} />
+                <span>변경사항 저장</span>
+              </button>
+            </ComponentTooltip>
+          }
+        />
       </ComponentTooltip>
 
       <div className="settings-container">

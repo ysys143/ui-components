@@ -1,6 +1,7 @@
 import React from 'react';
 import { Calendar, Download } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
+import StandardPageHeader from '../components/StandardPageHeader';
 import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import './Analytics.css';
 
@@ -25,17 +26,14 @@ const Analytics: React.FC = () => {
 
   return (
     <div className="analytics">
-      <div className="page-header">
-        <h1 className="page-title">분석</h1>
-        <p className="page-description">웹사이트 트래픽과 사용자 행동을 분석하세요</p>
-      </div>
-
       <ComponentTooltip
-        component="Analytics Header Controls"
-        description="분석 페이지의 날짜 필터와 내보내기 컨트롤입니다."
+        component="Standardized Page Header"
+        description="표준화된 페이지 헤더로 일관된 레이아웃을 제공합니다."
       >
-        <div className="analytics-header">
-          <div className="header-controls">
+        <StandardPageHeader
+          title="분석"
+          description="웹사이트 트래픽과 사용자 행동을 분석하세요"
+          controls={
             <ComponentTooltip
               component="Date Range Picker"
               description="날짜 범위를 선택하는 컴포넌트입니다."
@@ -45,6 +43,8 @@ const Analytics: React.FC = () => {
                 <span>2024년 3월 1일 - 7일</span>
               </button>
             </ComponentTooltip>
+          }
+          actions={
             <ComponentTooltip
               component="Export Button"
               description="데이터를 내보내기 위한 버튼입니다."
@@ -54,8 +54,8 @@ const Analytics: React.FC = () => {
                 <span>내보내기</span>
               </button>
             </ComponentTooltip>
-          </div>
-        </div>
+          }
+        />
       </ComponentTooltip>
 
       <ComponentTooltip

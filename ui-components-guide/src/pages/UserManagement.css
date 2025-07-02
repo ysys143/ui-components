@@ -1,7 +1,7 @@
 .user-management {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 2rem;
@@ -28,9 +28,10 @@
 
 .page-header-with-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 2rem;
+  margin-top: -3rem;
 }
 
 .btn-primary {
@@ -77,7 +78,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin: 0;
 }
 
 .search-box {
@@ -88,18 +89,27 @@
 
 .search-box .search-icon {
   position: absolute;
-  left: 12px;
+  left: 1.5rem;
   top: 50%;
   transform: translateY(-50%);
   color: #6b7280;
+  z-index: 10;
+  pointer-events: none;
 }
 
 .search-box .search-input {
   width: 100%;
-  padding: 0.5rem 1rem 0.5rem 2.5rem;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.search-box .search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .toolbar-actions {
@@ -112,6 +122,7 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-top: -0.5rem;
 }
 
 .data-table {

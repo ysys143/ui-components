@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
+import StandardPageHeader from '../components/StandardPageHeader';
 import './Foundation.css';
 
 const Foundation: React.FC = () => {
@@ -95,10 +96,15 @@ const Foundation: React.FC = () => {
 
   return (
     <div className="foundation-page">
-      <div className="page-header">
-        <h1 className="page-title">Foundation</h1>
-        <p className="page-description">디자인 시스템의 기초 요소들을 확인하세요</p>
-      </div>
+      <ComponentTooltip
+        component="Standardized Page Header"
+        description="표준화된 페이지 헤더로 일관된 레이아웃을 제공합니다."
+      >
+        <StandardPageHeader
+          title="Foundation"
+          description="디자인 시스템의 기초 요소들을 확인하세요"
+        />
+      </ComponentTooltip>
 
       {/* Color Section */}
       <section className="foundation-section">

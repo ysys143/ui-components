@@ -1,11 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Bell, User, GraduationCap } from 'lucide-react';
 import { useLearningMode } from '../contexts/LearningModeContext';
 import ComponentTooltip from './ui/ComponentTooltip';
 import './Navbar.css';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  onSearch?: (query: string) => void;
+  searchQuery?: string;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onSearch, searchQuery = '' }) => {
   const { isLearningMode, toggleLearningMode } = useLearningMode();
+  const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
+
+  useEffect(() => {
+    setLocalSearchQuery(searchQuery);
+  }, [searchQuery]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setLocalSearchQuery(value);
+    if (onSearch) {
+      onSearch(value);
+    }
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Escape') {
+      setLocalSearchQuery('');
+      if (onSearch) {
+        onSearch('');
+      }
+    }
+  };
 
   return (
     <ComponentTooltip
@@ -30,8 +57,11 @@ const Navbar: React.FC = () => {
             <Search size={20} className="search-icon" />
             <input 
               type="text" 
-              placeholder="검색..." 
+              placeholder="컴포넌트 검색 (예: button, card, modal)..." 
               className="search-input"
+              value={localSearchQuery}
+              onChange={handleSearchChange}
+              onKeyDown={handleSearchKeyDown}
             />
           </div>
         </ComponentTooltip>

@@ -6,6 +6,7 @@ import {
   Calendar, Clock, MapPin, Phone, CreditCard, Shield, Bell, Heart
 } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
+import StandardPageHeader from '../components/StandardPageHeader';
 import './Patterns.css';
 
 const Patterns: React.FC = () => {
@@ -17,10 +18,15 @@ const Patterns: React.FC = () => {
 
   return (
     <div className="patterns-page">
-      <div className="page-header">
-        <h1 className="page-title">Design Patterns</h1>
-        <p className="page-description">실제 애플리케이션에서 사용하는 복합적인 UI 패턴과 레이아웃</p>
-      </div>
+      <ComponentTooltip
+        component="Standardized Page Header"
+        description="표준화된 페이지 헤더로 일관된 레이아웃을 제공합니다."
+      >
+        <StandardPageHeader
+          title="Design Patterns"
+          description="실제 애플리케이션에서 사용하는 복합적인 UI 패턴과 레이아웃"
+        />
+      </ComponentTooltip>
 
       {/* Login Page Pattern */}
       <section className="pattern-section">
