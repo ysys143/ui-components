@@ -1,28 +1,31 @@
-import React from 'react';
-import { Calendar, Download } from 'lucide-react';
+import React, { useState } from 'react';
+import { Calendar, Download, TrendingUp, TrendingDown, Users, UserCheck, Eye, Activity, Clock } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
 import StandardPageHeader from '../components/StandardPageHeader';
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import D3LineChart from '../components/charts/D3LineChart';
+import D3BarChart from '../components/charts/D3BarChart';
+import D3DonutChart from '../components/charts/D3DonutChart';
+import D3FunnelChart from '../components/charts/D3FunnelChart';
+import ResponsiveChart from '../components/charts/ResponsiveChart';
+import { conversionFunnelData, monthlyMetrics, userSegments, trafficSources, pagePerformance } from '../data/analyticsData';
 import './Analytics.css';
 
 const Analytics: React.FC = () => {
-  const trafficData = [
-    { date: '01일', desktop: 4000, mobile: 2400, tablet: 1000 },
-    { date: '02일', desktop: 3000, mobile: 1398, tablet: 800 },
-    { date: '03일', desktop: 2000, mobile: 9800, tablet: 1200 },
-    { date: '04일', desktop: 2780, mobile: 3908, tablet: 900 },
-    { date: '05일', desktop: 1890, mobile: 4800, tablet: 1100 },
-    { date: '06일', desktop: 2390, mobile: 3800, tablet: 1000 },
-    { date: '07일', desktop: 3490, mobile: 4300, tablet: 1300 },
-  ];
-
-  const conversionData = [
-    { step: '방문', value: 10000, fill: '#3b82f6' },
-    { step: '상품 조회', value: 7500, fill: '#60a5fa' },
-    { step: '장바구니', value: 5000, fill: '#93bbfc' },
-    { step: '결제 시작', value: 3000, fill: '#c3ddfd' },
-    { step: '구매 완료', value: 1500, fill: '#dbeafe' },
-  ];
+  // 월별 메트릭의 최신 데이터 계산
+  const latestMetrics = monthlyMetrics[monthlyMetrics.length - 1];
+  const previousMetrics = monthlyMetrics[monthlyMetrics.length - 2];
+  
+  const sessionsChange = ((latestMetrics.sessions - previousMetrics.sessions) / previousMetrics.sessions * 100).toFixed(1);
+  const usersChange = ((latestMetrics.users - previousMetrics.users) / previousMetrics.users * 100).toFixed(1);
+  const pageViewsChange = ((latestMetrics.pageViews - previousMetrics.pageViews) / previousMetrics.pageViews * 100).toFixed(1);
+  const bounceRateChange = (latestMetrics.bounceRate - previousMetrics.bounceRate).toFixed(1);
+  
+  // 세션 데이터를 D3 차트용으로 변환
+  const sessionData = monthlyMetrics.map(m => ({
+    date: `2024-${String(monthlyMetrics.indexOf(m) + 1).padStart(2, '0')}-01`,
+    revenue: m.sessions,
+    orders: Math.round(m.sessions * 0.03) // 3% 전환율 가정
+  }));
 
   return (
     <div className="analytics">
@@ -40,7 +43,7 @@ const Analytics: React.FC = () => {
             >
               <button className="date-picker">
                 <Calendar size={20} />
-                <span>2024년 3월 1일 - 7일</span>
+                <span>2024년 1월 - 6월</span>
               </button>
             </ComponentTooltip>
           }
@@ -64,176 +67,173 @@ const Analytics: React.FC = () => {
       >
         <div className="summary-cards">
           <div className="summary-card">
-            <h3 className="summary-title">총 방문자</h3>
-            <p className="summary-value">45,678</p>
-            <p className="summary-change positive">+12.5%</p>
+            <div className="summary-header">
+              <div className="summary-icon">
+                <Users size={16} />
+              </div>
+              <div className={`summary-change-indicator ${Number(sessionsChange) >= 0 ? 'positive' : 'negative'}`}>
+                {Number(sessionsChange) >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                {Number(sessionsChange) >= 0 ? '+' : ''}{sessionsChange}%
+              </div>
+            </div>
+            <div>
+              <h3 className="summary-title">세션 수</h3>
+              <p className="summary-value">{latestMetrics.sessions.toLocaleString()}</p>
+            </div>
           </div>
           <div className="summary-card">
-            <h3 className="summary-title">페이지뷰</h3>
-            <p className="summary-value">234,567</p>
-            <p className="summary-change positive">+8.3%</p>
+            <div className="summary-header">
+              <div className="summary-icon">
+                <UserCheck size={16} />
+              </div>
+              <div className={`summary-change-indicator ${Number(usersChange) >= 0 ? 'positive' : 'negative'}`}>
+                {Number(usersChange) >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                {Number(usersChange) >= 0 ? '+' : ''}{usersChange}%
+              </div>
+            </div>
+            <div>
+              <h3 className="summary-title">고유 사용자</h3>
+              <p className="summary-value">{latestMetrics.users.toLocaleString()}</p>
+            </div>
           </div>
           <div className="summary-card">
-            <h3 className="summary-title">평균 체류 시간</h3>
-            <p className="summary-value">3:45</p>
-            <p className="summary-change negative">-2.1%</p>
+            <div className="summary-header">
+              <div className="summary-icon">
+                <Eye size={16} />
+              </div>
+              <div className={`summary-change-indicator ${Number(pageViewsChange) >= 0 ? 'positive' : 'negative'}`}>
+                {Number(pageViewsChange) >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                {Number(pageViewsChange) >= 0 ? '+' : ''}{pageViewsChange}%
+              </div>
+            </div>
+            <div>
+              <h3 className="summary-title">페이지뷰</h3>
+              <p className="summary-value">{latestMetrics.pageViews.toLocaleString()}</p>
+            </div>
           </div>
           <div className="summary-card">
-            <h3 className="summary-title">이탈률</h3>
-            <p className="summary-value">42.3%</p>
-            <p className="summary-change positive">-5.2%</p>
+            <div className="summary-header">
+              <div className="summary-icon">
+                <Activity size={16} />
+              </div>
+              <div className={`summary-change-indicator ${Number(bounceRateChange) <= 0 ? 'positive' : 'negative'}`}>
+                {Number(bounceRateChange) <= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                {Number(bounceRateChange) > 0 ? '+' : ''}{bounceRateChange}%p
+              </div>
+            </div>
+            <div>
+              <h3 className="summary-title">이탈률</h3>
+              <p className="summary-value">{latestMetrics.bounceRate}%</p>
+            </div>
           </div>
         </div>
       </ComponentTooltip>
 
       <div className="analytics-grid">
         <ComponentTooltip
-          component="Multi-Line Chart"
-          description="여러 데이터 시리즈를 비교하는 다중 라인 차트입니다."
-        >
-          <div className="chart-card large">
-            <h3 className="chart-title">디바이스별 트래픽</h3>
-            <ComponentTooltip
-              component="Chart Legend"
-              description="차트의 범례입니다. 각 시리즈를 구분합니다."
-            >
-              <div className="chart-legend">
-                <span className="legend-item">
-                  <span className="legend-dot" style={{ backgroundColor: '#3b82f6' }}></span>
-                  데스크톱
-                </span>
-                <span className="legend-item">
-                  <span className="legend-dot" style={{ backgroundColor: '#10b981' }}></span>
-                  모바일
-                </span>
-                <span className="legend-item">
-                  <span className="legend-dot" style={{ backgroundColor: '#f59e0b' }}></span>
-                  태블릿
-                </span>
-              </div>
-            </ComponentTooltip>
-            <ResponsiveContainer width="100%" height={350}>
-              <LineChart data={trafficData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-                <XAxis dataKey="date" stroke="#6b7280" />
-                <YAxis stroke="#6b7280" />
-                <Tooltip />
-                <Line type="monotone" dataKey="desktop" stroke="#3b82f6" strokeWidth={2} />
-                <Line type="monotone" dataKey="mobile" stroke="#10b981" strokeWidth={2} />
-                <Line type="monotone" dataKey="tablet" stroke="#f59e0b" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </ComponentTooltip>
-
-        <ComponentTooltip
-          component="Funnel Chart"
-          description="전환 깔때기를 시각화한 차트입니다."
+          component="D3 Session Trend Chart"
+          description="D3.js로 구현한 세션 트렌드 차트입니다."
         >
           <div className="chart-card">
-            <h3 className="chart-title">전환 깔때기</h3>
-            <div className="funnel-chart">
-              {conversionData.map((item, index) => (
-                <ComponentTooltip
-                  key={item.step}
-                  component="Funnel Step"
-                  description="깔때기의 각 단계를 나타냅니다."
-                >
-                  <div className="funnel-step">
-                    <div 
-                      className="funnel-bar"
-                      style={{
-                        width: `${(item.value / conversionData[0].value) * 100}%`,
-                        backgroundColor: item.fill
-                      }}
-                    >
-                      <span className="funnel-label">{item.step}</span>
-                      <span className="funnel-value">{item.value.toLocaleString()}</span>
-                    </div>
-                    {index < conversionData.length - 1 && (
-                      <span className="funnel-conversion">
-                        {Math.round((conversionData[index + 1].value / item.value) * 100)}%
-                      </span>
-                    )}
-                  </div>
-                </ComponentTooltip>
-              ))}
-            </div>
+            <h3 className="chart-title">월별 세션 추이</h3>
+            <ResponsiveChart>
+              {(width, height) => <D3LineChart data={sessionData} width={width} height={height} />}
+            </ResponsiveChart>
           </div>
         </ComponentTooltip>
 
         <ComponentTooltip
-          component="Stacked Bar Chart"
-          description="누적 막대 차트로 구성 비율을 표시합니다."
+          component="D3 Funnel Chart"
+          description="D3.js로 구현한 전환 퍼널 차트입니다."
         >
           <div className="chart-card">
-            <h3 className="chart-title">페이지별 조회수</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={[
-                { page: '홈', views: 12000 },
-                { page: '상품', views: 8000 },
-                { page: '블로그', views: 6000 },
-                { page: '회사소개', views: 3000 },
-                { page: '문의', views: 2000 },
-              ]}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-                <XAxis dataKey="page" stroke="#6b7280" />
-                <YAxis stroke="#6b7280" />
-                <Tooltip />
-                <Bar dataKey="views" fill="#8b5cf6" radius={[8, 8, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <h3 className="chart-title">전환 퍼널 분석</h3>
+            <ResponsiveChart>
+              {(width, height) => <D3FunnelChart data={conversionFunnelData} width={width} height={height} />}
+            </ResponsiveChart>
           </div>
         </ComponentTooltip>
 
         <ComponentTooltip
-          component="Progress List"
-          description="진행률을 표시하는 리스트 컴포넌트입니다."
+          component="D3 User Segments"
+          description="D3.js로 구현한 사용자 세그먼트 차트입니다."
+        >
+          <div className="chart-card">
+            <h3 className="chart-title">사용자 세그먼트 분석</h3>
+            <ResponsiveChart>
+              {(width, height) => <D3DonutChart data={userSegments as any} width={width} height={height} />}
+            </ResponsiveChart>
+          </div>
+        </ComponentTooltip>
+
+        <ComponentTooltip
+          component="Traffic Sources Analysis"
+          description="트래픽 소스별 성과를 분석합니다."
         >
           <div className="chart-card">
             <h3 className="chart-title">트래픽 소스</h3>
             <div className="progress-list">
-              <div className="progress-item">
-                <div className="progress-header">
-                  <span>직접 방문</span>
-                  <span>45%</span>
-                </div>
-                <ComponentTooltip
-                  component="Progress Bar"
-                  description="진행률을 시각적으로 표현하는 바입니다."
-                >
-                  <div className="progress-bar">
-                    <div className="progress-fill" style={{ width: '45%', backgroundColor: '#3b82f6' }}></div>
+              {trafficSources.map((source, index) => (
+                <div key={source.source} className="progress-item">
+                  <div className="progress-header">
+                    <span>{source.source}</span>
+                    <span>{source.value}%</span>
                   </div>
-                </ComponentTooltip>
-              </div>
-              <div className="progress-item">
-                <div className="progress-header">
-                  <span>검색 엔진</span>
-                  <span>30%</span>
+                  <div className="progress-bar">
+                    <div 
+                      className="progress-fill" 
+                      style={{ 
+                        width: `${source.value}%`, 
+                        backgroundColor: ['#4f46e5', '#059669', '#7c3aed', '#d97706', '#dc2626'][index]
+                      }}
+                    ></div>
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#71717a', marginTop: '0.25rem' }}>
+                    {source.sessions.toLocaleString()} 세션 | {source.conversions.toLocaleString()} 전환
+                  </div>
                 </div>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: '30%', backgroundColor: '#10b981' }}></div>
-                </div>
-              </div>
-              <div className="progress-item">
-                <div className="progress-header">
-                  <span>소셜 미디어</span>
-                  <span>15%</span>
-                </div>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: '15%', backgroundColor: '#f59e0b' }}></div>
-                </div>
-              </div>
-              <div className="progress-item">
-                <div className="progress-header">
-                  <span>추천 사이트</span>
-                  <span>10%</span>
-                </div>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: '10%', backgroundColor: '#8b5cf6' }}></div>
-                </div>
-              </div>
+              ))}
+            </div>
+          </div>
+        </ComponentTooltip>
+        
+        <ComponentTooltip
+          component="Page Performance Table"
+          description="페이지별 성과 지표를 표시합니다."
+        >
+          <div className="chart-card">
+            <h3 className="chart-title">페이지별 성과</h3>
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', fontSize: '0.875rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid #e4e4e7' }}>
+                    <th style={{ padding: '0.75rem', textAlign: 'left', color: '#71717a' }}>페이지</th>
+                    <th style={{ padding: '0.75rem', textAlign: 'right', color: '#71717a' }}>조회수</th>
+                    <th style={{ padding: '0.75rem', textAlign: 'right', color: '#71717a' }}>평균 체류시간</th>
+                    <th style={{ padding: '0.75rem', textAlign: 'right', color: '#71717a' }}>이탈률</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pagePerformance.map(page => (
+                    <tr key={page.page} style={{ borderBottom: '1px solid #e4e4e7' }}>
+                      <td style={{ padding: '0.75rem', color: '#18181b' }}>{page.page}</td>
+                      <td style={{ padding: '0.75rem', textAlign: 'right', color: '#18181b' }}>
+                        {page.views.toLocaleString()}
+                      </td>
+                      <td style={{ padding: '0.75rem', textAlign: 'right', color: '#18181b' }}>
+                        {Math.floor(page.avgTime / 60)}:{String(page.avgTime % 60).padStart(2, '0')}
+                      </td>
+                      <td style={{ padding: '0.75rem', textAlign: 'right' }}>
+                        <span style={{ 
+                          color: page.exitRate > 40 ? '#dc2626' : page.exitRate > 25 ? '#d97706' : '#059669'
+                        }}>
+                          {page.exitRate}%
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </ComponentTooltip>

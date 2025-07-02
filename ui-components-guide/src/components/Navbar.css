@@ -131,11 +131,16 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: #e5e7eb;
+  background-color: #f3f4f6;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6b7280;
+  color: #374151;
+}
+
+.user-avatar svg {
+  stroke-width: 2;
+  color: #374151;
 }
 
 .user-name {

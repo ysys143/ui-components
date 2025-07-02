@@ -1,43 +1,54 @@
-import React from 'react';
-import { ArrowUp, ArrowDown, Users, ShoppingCart, DollarSign, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowUp, ArrowDown, Users, ShoppingCart, DollarSign, TrendingUp, Package, CreditCard, UserCheck, RefreshCw } from 'lucide-react';
 import ComponentTooltip from '../components/ui/ComponentTooltip';
 import StandardPageHeader from '../components/StandardPageHeader';
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import D3LineChart from '../components/charts/D3LineChart';
+import D3BarChart from '../components/charts/D3BarChart';
+import D3DonutChart from '../components/charts/D3DonutChart';
+import D3HeatMap from '../components/charts/D3HeatMap';
+import ResponsiveChart from '../components/charts/ResponsiveChart';
+import { revenueData, salesByRegion, productCategories, hourlyTraffic, realtimeActivities } from '../data/dashboardData';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
+  // 실시간 메트릭 계산
+  const totalRevenue = revenueData.reduce((sum, d) => sum + d.revenue, 0);
+  const totalOrders = revenueData.reduce((sum, d) => sum + d.orders, 0);
+  const avgOrderValue = totalRevenue / totalOrders;
+  const totalCustomers = salesByRegion.reduce((sum, d) => sum + d.customers, 0);
+  
   const metrics = [
     { 
-      title: '총 사용자', 
-      value: '12,345', 
-      change: '+12%', 
-      trend: 'up', 
-      icon: Users,
-      color: '#3b82f6'
-    },
-    { 
-      title: '매출', 
-      value: '₩45.2M', 
-      change: '+8%', 
+      title: '총 매출', 
+      value: `₩${(totalRevenue / 1000000).toFixed(1)}M`, 
+      change: '+15.3%', 
       trend: 'up', 
       icon: DollarSign,
-      color: '#10b981'
+      color: '#4f46e5'
     },
     { 
       title: '주문 수', 
-      value: '1,234', 
-      change: '-5%', 
-      trend: 'down', 
+      value: totalOrders.toLocaleString(), 
+      change: '+8.7%', 
+      trend: 'up', 
       icon: ShoppingCart,
-      color: '#f59e0b'
+      color: '#059669'
     },
     { 
-      title: '전환율', 
-      value: '3.45%', 
-      change: '+2%', 
+      title: '활성 고객', 
+      value: totalCustomers.toLocaleString(), 
+      change: '+12.4%', 
       trend: 'up', 
-      icon: TrendingUp,
-      color: '#8b5cf6'
+      icon: Users,
+      color: '#7c3aed'
+    },
+    { 
+      title: '평균 주문액', 
+      value: `₩${Math.round(avgOrderValue).toLocaleString()}`, 
+      change: '-2.1%', 
+      trend: 'down', 
+      icon: CreditCard,
+      color: '#d97706'
     },
   ];
 
@@ -83,9 +94,8 @@ const Dashboard: React.FC = () => {
                 <div className="metric-header">
                   <div 
                     className="metric-icon"
-                    style={{ backgroundColor: `${metric.color}20`, color: metric.color }}
                   >
-                    <metric.icon size={24} />
+                    <metric.icon size={20} style={{ color: '#71717a' }} />
                   </div>
                   <ComponentTooltip
                     component="Trend Badge"
@@ -109,85 +119,50 @@ const Dashboard: React.FC = () => {
 
       <div className="charts-grid">
         <ComponentTooltip
-          component="Line Chart Card"
-          description="시계열 데이터를 표시하는 라인 차트 카드입니다."
+          component="D3 Line Chart"
+          description="D3.js로 구현한 인터랙티브 라인 차트입니다."
         >
           <div className="chart-card">
-            <h3 className="chart-title">월별 트렌드</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-                <XAxis dataKey="name" stroke="#6b7280" />
-                <YAxis stroke="#6b7280" />
-                <Tooltip />
-                <Line type="monotone" dataKey="value" stroke="#3b82f6" strokeWidth={2} />
-                <Line type="monotone" dataKey="sales" stroke="#10b981" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
+            <h3 className="chart-title">일별 매출 추이</h3>
+            <ResponsiveChart>
+              {(width, height) => <D3LineChart data={revenueData} width={width} height={height} />}
+            </ResponsiveChart>
           </div>
         </ComponentTooltip>
 
         <ComponentTooltip
-          component="Bar Chart Card"
-          description="카테고리별 데이터를 비교하는 막대 차트입니다."
+          component="D3 Bar Chart"
+          description="D3.js로 구현한 지역별 매출 차트입니다."
         >
           <div className="chart-card">
-            <h3 className="chart-title">카테고리별 판매</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-                <XAxis dataKey="name" stroke="#6b7280" />
-                <YAxis stroke="#6b7280" />
-                <Tooltip />
-                <Bar dataKey="sales" fill="#8b5cf6" radius={[8, 8, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <h3 className="chart-title">지역별 매출 현황</h3>
+            <ResponsiveChart>
+              {(width, height) => <D3BarChart data={salesByRegion} width={width} height={height} />}
+            </ResponsiveChart>
           </div>
         </ComponentTooltip>
 
         <ComponentTooltip
-          component="Pie Chart Card"
-          description="전체 대비 비율을 표시하는 파이 차트입니다."
+          component="D3 Donut Chart"
+          description="D3.js로 구현한 도넛 차트입니다."
         >
           <div className="chart-card">
-            <h3 className="chart-title">디바이스별 사용률</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={(entry) => `${entry.name}: ${entry.value}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+            <h3 className="chart-title">카테고리별 매출 비중</h3>
+            <ResponsiveChart>
+              {(width, height) => <D3DonutChart data={productCategories} width={width} height={height} />}
+            </ResponsiveChart>
           </div>
         </ComponentTooltip>
 
         <ComponentTooltip
-          component="Area Chart Card"
-          description="누적 데이터를 표시하는 영역 차트입니다."
+          component="D3 Heat Map"
+          description="시간대별 트래픽을 표시하는 히트맵입니다."
         >
           <div className="chart-card">
-            <h3 className="chart-title">누적 성장률</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-                <XAxis dataKey="name" stroke="#6b7280" />
-                <YAxis stroke="#6b7280" />
-                <Tooltip />
-                <Area type="monotone" dataKey="value" stroke="#f59e0b" fill="#fef3c7" />
-              </AreaChart>
-            </ResponsiveContainer>
+            <h3 className="chart-title">시간대별 트래픽 분석</h3>
+            <ResponsiveChart>
+              {(width, height) => <D3HeatMap data={hourlyTraffic} width={width} height={height} />}
+            </ResponsiveChart>
           </div>
         </ComponentTooltip>
       </div>
@@ -203,27 +178,24 @@ const Dashboard: React.FC = () => {
             description="타임라인 형태의 활동 목록입니다."
           >
             <ul className="activity-list">
-              <li className="activity-item">
-                <div className="activity-dot"></div>
-                <div className="activity-content">
-                  <p className="activity-text">새로운 사용자 가입: user@example.com</p>
-                  <span className="activity-time">5분 전</span>
-                </div>
+              {realtimeActivities.map(activity => (
+                <li key={activity.id} className="activity-item">
+                  <div className={`activity-dot ${activity.status}`} style={{
+                    backgroundColor: activity.status === 'success' ? '#059669' : 
+                                   activity.status === 'error' ? '#dc2626' : 
+                                   activity.status === 'warning' ? '#d97706' : '#71717a'
+                  }}></div>
+                  <div className="activity-content">
+                    <p className="activity-text">
+                      {activity.message}
+                      {activity.amount && <span style={{ fontWeight: 500 }}> {activity.amount}</span>}
+                      {activity.user && <span style={{ fontWeight: 500 }}> - {activity.user}</span>}
+                      {activity.order && <span style={{ color: '#71717a' }}> ({activity.order})</span>}
+                    </p>
+                    <span className="activity-time">{activity.time}</span>
+                  </div>
               </li>
-              <li className="activity-item">
-                <div className="activity-dot"></div>
-                <div className="activity-content">
-                  <p className="activity-text">주문 #1234 완료</p>
-                  <span className="activity-time">15분 전</span>
-                </div>
-              </li>
-              <li className="activity-item">
-                <div className="activity-dot"></div>
-                <div className="activity-content">
-                  <p className="activity-text">시스템 업데이트 완료</p>
-                  <span className="activity-time">1시간 전</span>
-                </div>
-              </li>
+              ))}
             </ul>
           </ComponentTooltip>
         </div>

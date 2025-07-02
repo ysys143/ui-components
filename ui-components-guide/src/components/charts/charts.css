@@ -1,0 +1,67 @@
+/* D3 차트 스타일 */
+.d3-chart-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.d3-chart-container svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* 차트 그리드 라인 스타일 */
+.grid line {
+  stroke: #f3f4f6;
+  stroke-opacity: 1;
+  shape-rendering: crispEdges;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
+/* 축 스타일 */
+.axis {
+  font-size: 12px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #e5e7eb;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  fill: #6b7280;
+}
+
+/* 툴팁 스타일 */
+.d3-tooltip {
+  position: absolute;
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 1000;
+  transition: opacity 0.2s;
+}
+
+.d3-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+}

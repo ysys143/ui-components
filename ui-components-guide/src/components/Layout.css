@@ -17,6 +17,12 @@
   background: #f9fafb;
 }
 
+.layout-main.no-scroll {
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Layout Toast 메시지 스타일 */
 .layout > .toast-container {
   position: fixed;
