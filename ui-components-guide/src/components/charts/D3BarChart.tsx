@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import { chartColors, getStatusColor } from '../../theme/chartColors';
 import './charts.css';
 
 interface BarData {
@@ -42,9 +43,7 @@ const D3BarChart: React.FC<D3BarChartProps> = ({ data, width = 600, height = 300
       .range([innerHeight, 0]);
 
     // Color scale based on growth
-    const colorScale = d3.scaleLinear<string>()
-      .domain([-5, 0, 15])
-      .range(['#dc2626', '#71717a', '#059669']);
+    const colorScale = (growth: number) => getStatusColor(growth);
 
     // Grid lines
     g.append('g')
@@ -53,21 +52,22 @@ const D3BarChart: React.FC<D3BarChartProps> = ({ data, width = 600, height = 300
         .tickSize(-innerWidth)
         .tickFormat(() => '')
       )
+      .style('stroke', chartColors.grid)
       .style('stroke-dasharray', '2,2')
-      .style('opacity', 0.3);
+      .style('opacity', 0.5);
 
     // Axes
     g.append('g')
       .attr('transform', `translate(0,${innerHeight})`)
       .call(d3.axisBottom(xScale))
-      .style('color', '#71717a')
+      .style('color', chartColors.text.secondary)
       .style('font-size', '12px');
 
     g.append('g')
       .call(d3.axisLeft(yScale)
         .tickFormat(d => `₩${(d as number / 1000000).toFixed(1)}M`)
       )
-      .style('color', '#71717a')
+      .style('color', chartColors.text.secondary)
       .style('font-size', '12px');
 
     // Bars
@@ -99,7 +99,7 @@ const D3BarChart: React.FC<D3BarChartProps> = ({ data, width = 600, height = 300
       .attr('text-anchor', 'middle')
       .attr('font-size', '11px')
       .attr('font-weight', '500')
-      .attr('fill', d => d.growth >= 0 ? '#059669' : '#dc2626')
+      .attr('fill', d => getStatusColor(d.growth))
       .style('opacity', 0)
       .text(d => `${d.growth > 0 ? '+' : ''}${d.growth}%`)
       .transition()
@@ -112,12 +112,13 @@ const D3BarChart: React.FC<D3BarChartProps> = ({ data, width = 600, height = 300
       .attr('class', 'd3-tooltip')
       .style('opacity', 0)
       .style('position', 'absolute')
-      .style('background', 'rgba(0, 0, 0, 0.8)')
-      .style('color', 'white')
+      .style('background', chartColors.tooltip.background)
+      .style('color', chartColors.tooltip.text)
       .style('padding', '8px 12px')
       .style('border-radius', '4px')
       .style('font-size', '12px')
-      .style('pointer-events', 'none');
+      .style('pointer-events', 'none')
+      .style('box-shadow', '0 2px 4px rgba(0,0,0,0.2)');
 
     bars
       .on('mouseover', function(event, d) {

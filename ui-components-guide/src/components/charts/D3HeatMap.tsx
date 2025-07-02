@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import { chartColors } from '../../theme/chartColors';
 import './charts.css';
 
 interface HeatMapData {
@@ -37,13 +38,13 @@ const D3HeatMap: React.FC<D3HeatMapProps> = ({ data, width = 600, height = 200 }
     const cellHeight = innerHeight / 2;
 
     // Color scales
-    const visitorColorScale = d3.scaleSequential()
+    const visitorColorScale = d3.scaleLinear()
       .domain([0, d3.max(data, d => d.visitors) as number])
-      .interpolator(d3.interpolateBlues);
+      .range([chartColors.gradient.heatmap.visitor.low, chartColors.gradient.heatmap.visitor.high]);
 
-    const bounceColorScale = d3.scaleSequential()
+    const bounceColorScale = d3.scaleLinear()
       .domain([55, 30])
-      .interpolator(d3.interpolateReds);
+      .range([chartColors.gradient.heatmap.bounce.high, chartColors.gradient.heatmap.bounce.low]);
 
     // Create cells for visitors
     g.selectAll('.visitor-cell')
@@ -86,7 +87,7 @@ const D3HeatMap: React.FC<D3HeatMapProps> = ({ data, width = 600, height = 200 }
       .attr('y', -5)
       .attr('text-anchor', 'middle')
       .attr('font-size', '11px')
-      .attr('fill', '#71717a')
+      .attr('fill', chartColors.text.secondary)
       .text(d => `${d.hour}:00`);
 
     // Metric labels
@@ -95,7 +96,7 @@ const D3HeatMap: React.FC<D3HeatMapProps> = ({ data, width = 600, height = 200 }
       .attr('y', cellHeight / 2)
       .attr('text-anchor', 'middle')
       .attr('font-size', '11px')
-      .attr('fill', '#71717a')
+      .attr('fill', chartColors.text.secondary)
       .attr('transform', `rotate(-90, -30, ${cellHeight / 2})`)
       .text('방문자');
 
@@ -104,7 +105,7 @@ const D3HeatMap: React.FC<D3HeatMapProps> = ({ data, width = 600, height = 200 }
       .attr('y', cellHeight + cellHeight / 2 + 2)
       .attr('text-anchor', 'middle')
       .attr('font-size', '11px')
-      .attr('fill', '#71717a')
+      .attr('fill', chartColors.text.secondary)
       .attr('transform', `rotate(-90, -30, ${cellHeight + cellHeight / 2 + 2})`)
       .text('이탈률');
 
@@ -113,12 +114,13 @@ const D3HeatMap: React.FC<D3HeatMapProps> = ({ data, width = 600, height = 200 }
       .attr('class', 'd3-tooltip')
       .style('opacity', 0)
       .style('position', 'absolute')
-      .style('background', 'rgba(0, 0, 0, 0.8)')
-      .style('color', 'white')
+      .style('background', chartColors.tooltip.background)
+      .style('color', chartColors.tooltip.text)
       .style('padding', '8px 12px')
       .style('border-radius', '4px')
       .style('font-size', '12px')
-      .style('pointer-events', 'none');
+      .style('pointer-events', 'none')
+      .style('box-shadow', '0 2px 4px rgba(0,0,0,0.2)');
 
     // Add interactivity
     g.selectAll('.visitor-cell, .bounce-cell')
@@ -127,7 +129,7 @@ const D3HeatMap: React.FC<D3HeatMapProps> = ({ data, width = 600, height = 200 }
         d3.select(this)
           .transition()
           .duration(100)
-          .attr('stroke', '#18181b')
+          .attr('stroke', chartColors.text.primary)
           .attr('stroke-width', 2);
         
         const isVisitorCell = d3.select(this).classed('visitor-cell');
@@ -176,7 +178,7 @@ const D3HeatMap: React.FC<D3HeatMapProps> = ({ data, width = 600, height = 200 }
       .attr('y', -5)
       .attr('text-anchor', 'middle')
       .attr('font-size', '10px')
-      .attr('fill', '#71717a')
+      .attr('fill', chartColors.text.secondary)
       .text('방문자 수');
 
     return () => {

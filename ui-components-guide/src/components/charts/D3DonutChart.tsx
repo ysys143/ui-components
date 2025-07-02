@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import { chartColors } from '../../theme/chartColors';
 import './charts.css';
 
 interface DonutData {
@@ -37,7 +38,7 @@ const D3DonutChart: React.FC<D3DonutChartProps> = ({ data, width = 300, height =
     // Color scale with distinct colors for each segment
     const colorScale = d3.scaleOrdinal()
       .domain(data.map(getLabel))
-      .range(['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']);
+      .range(chartColors.categorical.slice(0, data.length));
 
     // Create pie generator
     const pie = d3.pie<DonutData>()
@@ -86,14 +87,14 @@ const D3DonutChart: React.FC<D3DonutChartProps> = ({ data, width = 300, height =
       .attr('dy', '-0.2em')
       .attr('font-size', '24px')
       .attr('font-weight', '500')
-      .attr('fill', '#18181b')
+      .attr('fill', chartColors.text.primary)
       .text(`₩${(totalRevenue / 1000000).toFixed(1)}M`);
     
     centerGroup.append('text')
       .attr('text-anchor', 'middle')
       .attr('dy', '1.2em')
       .attr('font-size', '12px')
-      .attr('fill', '#71717a')
+      .attr('fill', chartColors.text.secondary)
       .text('총 매출');
 
     // Tooltip
@@ -101,12 +102,13 @@ const D3DonutChart: React.FC<D3DonutChartProps> = ({ data, width = 300, height =
       .attr('class', 'd3-tooltip')
       .style('opacity', 0)
       .style('position', 'absolute')
-      .style('background', 'rgba(0, 0, 0, 0.8)')
-      .style('color', 'white')
+      .style('background', chartColors.tooltip.background)
+      .style('color', chartColors.tooltip.text)
       .style('padding', '8px 12px')
       .style('border-radius', '4px')
       .style('font-size', '12px')
-      .style('pointer-events', 'none');
+      .style('pointer-events', 'none')
+      .style('box-shadow', '0 2px 4px rgba(0,0,0,0.2)');
 
     // Add interactivity
     arcs.select('path')
@@ -140,7 +142,7 @@ const D3DonutChart: React.FC<D3DonutChartProps> = ({ data, width = 300, height =
       .attr('text-anchor', 'middle')
       .attr('font-size', '12px')
       .attr('font-weight', '500')
-      .attr('fill', 'white')
+      .attr('fill', chartColors.text.inverse)
       .style('opacity', 0)
       .text(d => d.data.value > 10 ? `${d.data.value}%` : '')
       .transition()

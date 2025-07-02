@@ -7,6 +7,7 @@ import D3BarChart from '../components/charts/D3BarChart';
 import D3DonutChart from '../components/charts/D3DonutChart';
 import D3HeatMap from '../components/charts/D3HeatMap';
 import ResponsiveChart from '../components/charts/ResponsiveChart';
+import { chartColors } from '../theme/chartColors';
 import { revenueData, salesByRegion, productCategories, hourlyTraffic, realtimeActivities } from '../data/dashboardData';
 import './Dashboard.css';
 
@@ -181,16 +182,16 @@ const Dashboard: React.FC = () => {
               {realtimeActivities.map(activity => (
                 <li key={activity.id} className="activity-item">
                   <div className={`activity-dot ${activity.status}`} style={{
-                    backgroundColor: activity.status === 'success' ? '#059669' : 
-                                   activity.status === 'error' ? '#dc2626' : 
-                                   activity.status === 'warning' ? '#d97706' : '#71717a'
+                    backgroundColor: activity.status === 'success' ? chartColors.positive : 
+                                   activity.status === 'error' ? chartColors.negative : 
+                                   activity.status === 'warning' ? chartColors.tertiary : chartColors.neutral
                   }}></div>
                   <div className="activity-content">
                     <p className="activity-text">
                       {activity.message}
                       {activity.amount && <span style={{ fontWeight: 500 }}> {activity.amount}</span>}
                       {activity.user && <span style={{ fontWeight: 500 }}> - {activity.user}</span>}
-                      {activity.order && <span style={{ color: '#71717a' }}> ({activity.order})</span>}
+                      {activity.order && <span style={{ color: chartColors.text.secondary }}> ({activity.order})</span>}
                     </p>
                     <span className="activity-time">{activity.time}</span>
                   </div>

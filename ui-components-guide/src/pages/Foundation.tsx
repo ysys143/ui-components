@@ -47,11 +47,20 @@ const Foundation: React.FC = () => {
 
   const borderRadius = [
     { name: 'none', value: '0' },
-    { name: 'sm', value: '0.125rem' },
-    { name: 'md', value: '0.375rem' },
-    { name: 'lg', value: '0.5rem' },
-    { name: 'xl', value: '0.75rem' },
-    { name: '2xl', value: '1rem' },
+    { name: '2px', value: '0.125rem' },
+    { name: '4px', value: '0.25rem' },
+    { name: '6px', value: '0.375rem' },
+    { name: '8px', value: '0.5rem' },
+    { name: '10px', value: '0.625rem' },
+    { name: '12px', value: '0.75rem' },
+    { name: '14px', value: '0.875rem' },
+    { name: '16px', value: '1rem' },
+    { name: '20px', value: '1.25rem' },
+    { name: '24px', value: '1.5rem' },
+    { name: '28px', value: '1.75rem' },
+    { name: '32px', value: '2rem' },
+    { name: '40px', value: '2.5rem' },
+    { name: '48px', value: '3rem' },
     { name: 'full', value: '9999px' }
   ];
 

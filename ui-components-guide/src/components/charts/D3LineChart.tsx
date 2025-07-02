@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import { chartColors } from '../../theme/chartColors';
 import './charts.css';
 
 interface DataPoint {
@@ -55,8 +56,9 @@ const D3LineChart: React.FC<D3LineChartProps> = ({ data, width = 600, height = 3
         .tickSize(-innerHeight)
         .tickFormat(() => '')
       )
+      .style('stroke', chartColors.grid)
       .style('stroke-dasharray', '2,2')
-      .style('opacity', 0.3);
+      .style('opacity', 0.5);
 
     g.append('g')
       .attr('class', 'grid')
@@ -64,8 +66,9 @@ const D3LineChart: React.FC<D3LineChartProps> = ({ data, width = 600, height = 3
         .tickSize(-innerWidth)
         .tickFormat(() => '')
       )
+      .style('stroke', chartColors.grid)
       .style('stroke-dasharray', '2,2')
-      .style('opacity', 0.3);
+      .style('opacity', 0.5);
 
     // Axes
     g.append('g')
@@ -73,14 +76,14 @@ const D3LineChart: React.FC<D3LineChartProps> = ({ data, width = 600, height = 3
       .call(d3.axisBottom(xScale)
         .tickFormat(d3.timeFormat('%m/%d'))
       )
-      .style('color', '#71717a')
+      .style('color', chartColors.text.secondary)
       .style('font-size', '12px');
 
     g.append('g')
       .call(d3.axisLeft(yScale)
         .tickFormat(d => `₩${(d as number / 1000).toFixed(0)}k`)
       )
-      .style('color', '#71717a')
+      .style('color', chartColors.text.secondary)
       .style('font-size', '12px');
 
     // Line generator
@@ -99,13 +102,13 @@ const D3LineChart: React.FC<D3LineChartProps> = ({ data, width = 600, height = 3
 
     gradient.append('stop')
       .attr('offset', '0%')
-      .attr('stop-color', '#4f46e5')
-      .attr('stop-opacity', 0.1);
+      .attr('stop-color', chartColors.gradient.primary.start)
+      .attr('stop-opacity', chartColors.gradient.primary.startOpacity);
 
     gradient.append('stop')
       .attr('offset', '100%')
-      .attr('stop-color', '#4f46e5')
-      .attr('stop-opacity', 0.02);
+      .attr('stop-color', chartColors.gradient.primary.end)
+      .attr('stop-opacity', chartColors.gradient.primary.endOpacity);
 
     // Area
     const area = d3.area<any>()
@@ -123,7 +126,7 @@ const D3LineChart: React.FC<D3LineChartProps> = ({ data, width = 600, height = 3
     const path = g.append('path')
       .datum(parsedData)
       .attr('fill', 'none')
-      .attr('stroke', '#4f46e5')
+      .attr('stroke', chartColors.primary)
       .attr('stroke-width', 2)
       .attr('d', line);
 
@@ -145,7 +148,7 @@ const D3LineChart: React.FC<D3LineChartProps> = ({ data, width = 600, height = 3
       .attr('cx', d => xScale(d.parsedDate))
       .attr('cy', d => yScale(d.revenue))
       .attr('r', 0)
-      .attr('fill', '#4f46e5')
+      .attr('fill', chartColors.primary)
       .transition()
       .delay((_, i) => i * 100)
       .duration(300)
@@ -156,12 +159,13 @@ const D3LineChart: React.FC<D3LineChartProps> = ({ data, width = 600, height = 3
       .attr('class', 'd3-tooltip')
       .style('opacity', 0)
       .style('position', 'absolute')
-      .style('background', 'rgba(0, 0, 0, 0.8)')
-      .style('color', 'white')
+      .style('background', chartColors.tooltip.background)
+      .style('color', chartColors.tooltip.text)
       .style('padding', '8px 12px')
       .style('border-radius', '4px')
       .style('font-size', '12px')
-      .style('pointer-events', 'none');
+      .style('pointer-events', 'none')
+      .style('box-shadow', '0 2px 4px rgba(0,0,0,0.2)');
 
     g.selectAll('.dot')
       .on('mouseover', function(event, d: any) {

@@ -6,11 +6,41 @@
   flex-direction: column;
 }
 
-.sidebar-nav {
-  padding: 1rem;
+.sidebar-header {
+  padding: 1.5rem 1rem 1rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.sidebar-header h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 4px 0;
+  line-height: 20px;
+  text-align: left !important;
+  width: 100%;
+  align-self: flex-start;
+}
+
+.sidebar-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 40px;
+  text-align: left !important;
+  width: 100%;
+  align-self: flex-start;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .sidebar-link {
@@ -42,4 +72,30 @@
 
 .sidebar-label {
   flex: 1;
+}
+
+/* Section styles */
+.sidebar-section {
+  padding: 1rem;
+}
+
+.sidebar-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.75rem 0.5rem;
+}
+
+.sidebar-section-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 0 1rem;
 }

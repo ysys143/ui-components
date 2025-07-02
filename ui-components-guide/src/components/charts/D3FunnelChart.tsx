@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import { chartColors } from '../../theme/chartColors';
 import './charts.css';
 
 interface FunnelData {
@@ -48,12 +49,12 @@ const D3FunnelChart: React.FC<D3FunnelChartProps> = ({ data, width = 600, height
 
     gradient.append('stop')
       .attr('offset', '0%')
-      .attr('stop-color', '#4f46e5')
+      .attr('stop-color', chartColors.primary)
       .attr('stop-opacity', 0.9);
 
     gradient.append('stop')
       .attr('offset', '100%')
-      .attr('stop-color', '#7c3aed')
+      .attr('stop-color', chartColors.quaternary)
       .attr('stop-opacity', 0.7);
 
     // Draw funnel stages
@@ -77,7 +78,7 @@ const D3FunnelChart: React.FC<D3FunnelChartProps> = ({ data, width = 600, height
       stage.append('path')
         .attr('d', pathData)
         .attr('fill', 'url(#funnel-gradient)')
-        .attr('stroke', 'white')
+        .attr('stroke', chartColors.background)
         .attr('stroke-width', 2)
         .style('opacity', 0)
         .transition()
@@ -94,7 +95,7 @@ const D3FunnelChart: React.FC<D3FunnelChartProps> = ({ data, width = 600, height
         .attr('y', i * stageHeight + stageHeight / 2)
         .attr('text-anchor', 'middle')
         .attr('dy', '0.35em')
-        .attr('fill', 'white')
+        .attr('fill', chartColors.text.inverse)
         .attr('font-size', `${fontSize}px`)
         .attr('font-weight', '500')
         .style('opacity', 0)
@@ -110,7 +111,7 @@ const D3FunnelChart: React.FC<D3FunnelChartProps> = ({ data, width = 600, height
         .attr('y', i * stageHeight + stageHeight / 2)
         .attr('text-anchor', 'start')
         .attr('dy', '-0.5em')
-        .attr('fill', '#18181b')
+        .attr('fill', chartColors.text.primary)
         .attr('font-size', '12px')
         .attr('font-weight', '500')
         .style('opacity', 0)
@@ -127,7 +128,7 @@ const D3FunnelChart: React.FC<D3FunnelChartProps> = ({ data, width = 600, height
         .attr('y', i * stageHeight + stageHeight / 2)
         .attr('text-anchor', 'start')
         .attr('dy', '1em')
-        .attr('fill', '#71717a')
+        .attr('fill', chartColors.text.secondary)
         .attr('font-size', '10px')
         .style('opacity', 0)
         .text(`${overallRate}%`)
@@ -145,7 +146,7 @@ const D3FunnelChart: React.FC<D3FunnelChartProps> = ({ data, width = 600, height
           .attr('y1', i * stageHeight + stageHeight * 0.75)
           .attr('x2', innerWidth + 90)
           .attr('y2', (i + 1) * stageHeight + stageHeight * 0.25)
-          .attr('stroke', '#71717a')
+          .attr('stroke', chartColors.text.secondary)
           .attr('stroke-width', 1)
           .attr('marker-end', 'url(#arrowhead)')
           .style('opacity', 0)
@@ -158,7 +159,7 @@ const D3FunnelChart: React.FC<D3FunnelChartProps> = ({ data, width = 600, height
           .attr('x', innerWidth + 100)
           .attr('y', i * stageHeight + stageHeight)
           .attr('text-anchor', 'start')
-          .attr('fill', conversionRate > 50 ? '#059669' : '#dc2626')
+          .attr('fill', conversionRate > 50 ? chartColors.positive : chartColors.negative)
           .attr('font-size', '10px')
           .attr('font-weight', '500')
           .style('opacity', 0)
@@ -180,7 +181,7 @@ const D3FunnelChart: React.FC<D3FunnelChartProps> = ({ data, width = 600, height
       .attr('orient', 'auto')
       .append('polygon')
       .attr('points', '0 0, 10 3.5, 0 7')
-      .attr('fill', '#71717a');
+      .attr('fill', chartColors.text.secondary);
 
   }, [data, width, height]);
 

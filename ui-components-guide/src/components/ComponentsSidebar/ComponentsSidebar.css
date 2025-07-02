@@ -1,6 +1,6 @@
 .components-sidebar {
   width: 280px;
-  background-color: #f3f4f6;
+  background-color: #ffffff;
   border-right: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
@@ -11,30 +11,43 @@
 }
 
 .components-sidebar-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 1.5rem 1rem 1rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
   background-color: #ffffff;
   position: sticky;
   top: 0;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
 }
 
 .components-sidebar-header h3 {
-  font-size: 1rem;
-  font-weight: normal;
-  color: #374151;
-  margin: 0 0 0.25rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+  line-height: 22px;
+  text-align: left !important;
+  width: 100%;
+  align-self: flex-start;
 }
 
 .components-sidebar-subtitle {
-  font-size: 0.75rem;
-  color: #374151;
+  font-size: 0.875rem;
+  color: #6b7280;
   margin: 0;
+  line-height: 20px;
+  text-align: left !important;
+  width: 100%;
+  align-self: flex-start;
 }
 
 .components-list {
   padding: 1rem;
   flex: 1;
+  background-color: #fafafa;
 }
 
 .component-category {

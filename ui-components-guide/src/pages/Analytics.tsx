@@ -7,6 +7,7 @@ import D3BarChart from '../components/charts/D3BarChart';
 import D3DonutChart from '../components/charts/D3DonutChart';
 import D3FunnelChart from '../components/charts/D3FunnelChart';
 import ResponsiveChart from '../components/charts/ResponsiveChart';
+import { chartColors } from '../theme/chartColors';
 import { conversionFunnelData, monthlyMetrics, userSegments, trafficSources, pagePerformance } from '../data/analyticsData';
 import './Analytics.css';
 
@@ -184,7 +185,7 @@ const Analytics: React.FC = () => {
                       className="progress-fill" 
                       style={{ 
                         width: `${source.value}%`, 
-                        backgroundColor: ['#4f46e5', '#059669', '#7c3aed', '#d97706', '#dc2626'][index]
+                        backgroundColor: chartColors.categorical[index]
                       }}
                     ></div>
                   </div>
